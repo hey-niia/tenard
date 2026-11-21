@@ -202,6 +202,43 @@
   /* reply suggestions: stacked outline pills with an arrow */
   .phone .chips { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 8px; padding: 6px 16px 12px; }
   .phone .chips.inline { flex-direction: row; flex-wrap: wrap; }
+  /* home screen */
+  .home-page { display: flex; flex-direction: column; padding: 4px 16px 24px; }
+  .home-page > * { flex-shrink: 0; }
+  .hcover { position: relative; height: 168px; border-radius: 22px; overflow: hidden; background: #EEE; }
+  .hcover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hcover-tag { position: absolute; left: 10px; bottom: 10px; font-size: 11px; background: rgba(255,255,255,.9); border-radius: 999px; padding: 3px 8px; color: #444; }
+  .hhead { display: flex; align-items: center; gap: 12px; margin: 14px 2px 12px; }
+  .hgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .hlabel { margin: 22px 4px 8px; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  .hcard { border: 1px solid #E6E6E6; border-radius: 22px; background: #fff; padding: 14px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 6px 18px -12px rgba(0,0,0,.35); }
+  .hcard.hlist { padding: 4px 14px; gap: 0; }
+  .hstat { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .hstat b { font-size: 28px; letter-spacing: -.6px; min-width: 40px; }
+  .hstat > span:not(.stage) { font-size: 15px; color: #333; }
+  .hline { display: flex; justify-content: space-between; gap: 10px; font-size: 14px; border-top: 1px solid #F0F0F0; padding-top: 10px; }
+  .hrow { display: flex; align-items: center; gap: 12px; min-height: 60px; padding: 8px 0; border-top: 1px solid #F0F0F0; cursor: pointer; }
+  .hlist .hrow:first-child { border-top: 0; }
+  .hdot { width: 10px; height: 10px; border-radius: 5px; flex-shrink: 0; }
+  .hdot.green { background: #34A853; } .hdot.orange { background: #E8892B; }
+  .switch { appearance: none; -webkit-appearance: none; width: 51px; height: 31px; border-radius: 16px; background: #E3E3E3; position: relative; flex-shrink: 0; cursor: pointer; transition: background .2s; margin: 0; }
+  .switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,.2); transition: transform .2s; }
+  .switch:checked { background: var(--yellow); }
+  .switch:checked::after { transform: translateX(20px); }
+  .switch:focus-visible { outline: 2px solid #111; outline-offset: 2px; }
+  /* case screen */
+  .segs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
+  .segs span { height: 6px; border-radius: 3px; background: #EEEEEE; }
+  .segs span.on { background: var(--yellow); }
+  .segs span.now { background: linear-gradient(90deg, var(--yellow) 50%, #EEEEEE 50%); }
+  .cdot { width: 26px; height: 26px; border-radius: 13px; flex-shrink: 0; border: 1.5px solid #D6D6D6; color: #6B6B6B; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .cdot.done { border: 0; background: var(--yellow); color: #111; }
+  .cdot.now { border-color: #111; color: #111; }
+  .cstep { cursor: default; }
+  .hcard-btn { width: 100%; text-align: left; color: var(--ink); align-items: stretch; cursor: pointer; }
+  .hadd { align-items: center; justify-content: center; min-height: 120px; border-style: dashed; color: var(--ink); margin-top: 14px; }
+  .phone .foot { border-top: 0; }
+  .phone .ghost-btn { border: 1.5px solid #D9D9D9; border-radius: 14px; color: #333; }
   .reset-demo { align-self: center; margin-top: 8px; min-height: 44px; border: 0; background: none; color: var(--muted); font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
   /* small phones: give the chat more room */
   @media (max-height: 760px) {
@@ -383,7 +420,7 @@ const OFFSCOPE = {
 
 /* ---------- state ---------- */
 const FRESH = { type: null, step: 0, path: 'ceiling', answer: 0, answerLabel: '', asked: false, desc: null, desc2: null, typedFirst: false, photo: null,
-  fixed: false, verified: false, awaitVerify: false, afterPhoto: null, insp: null, missed: false, exported: false, offscope: null };
+  fixed: false, verified: false, awaitVerify: false, afterPhoto: null, insp: null, missed: false, exported: false, offscope: null, docs: [] };
 const RENT_STABILIZED = true; // from "About your home"
 const S = Object.assign({ view: 'chat', typing: false, cases: [] }, FRESH);
 
@@ -405,13 +442,79 @@ function kaseFor(snap) {
 }
 function archiveCurrent() { if (S.type) S.cases.unshift(snapshot()); }
 function saveState() {
-  try { localStorage.setItem(STORE, JSON.stringify({ current: portable(snapshot()), cases: S.cases.map(portable) })); } catch (e) { /* private mode: run without saving */ }
+  try { localStorage.setItem(STORE, JSON.stringify({ current: portable(snapshot()), cases: S.cases.map(portable), home: S.home })); } catch (e) { /* private mode: run without saving */ }
 }
 function loadState() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORE) || 'null');
     if (saved && saved.current) { Object.assign(S, FRESH, saved.current); S.cases = Array.isArray(saved.cases) ? saved.cases : []; }
+    if (saved && saved.home) Object.assign(S.home, saved.home);
   } catch (e) { /* ignore a broken or blocked store */ }
+}
+
+/* ---------- home: the building, its public record, and the household facts the rules depend on ---------- */
+const HOME_DEFAULT = { child6: false, child10: false, ownerLives: false, section8: false };
+S.home = Object.assign({}, HOME_DEFAULT);
+const BUILDING = {
+  address: '1415 Morris Ave, Apt 4B', area: 'Bronx, NY 10456', photo: 'img/window.jpg',
+  facts: [['Built', '1928'], ['Apartments', '24'], ['Building type', '3+ units'], ['Rent', 'Stabilized']],
+  // sample numbers until the address lookup (Eric's /api/building) is connected
+  record: { open: 12, classC: 3, complaints: 31, top: 'Leaks, mould, heat' },
+  owner: '[Owner / management co.]'
+};
+const HOUSEHOLD = [
+  ['child6', 'A child under 6 lives here', 'Peeling paint counts as a lead hazard'],
+  ['child10', 'A child 10 or under lives here', 'Window guards are required'],
+  ['ownerLives', 'The owner lives in the building', 'Changes retaliation protection in small buildings'],
+  ['section8', 'I use a Section 8 voucher', 'Adds the housing agency inspection route']
+];
+function homeView() {
+  const b = BUILDING, rec = b.record;
+  const protectedRow = S.home.ownerLives
+    ? ['Retaliation protection', 'May not apply: owner-occupied buildings under 4 units are excluded', 'orange']
+    : ['Retaliation protection', 'A landlord can’t punish you for complaining', 'green'];
+  const rights = [
+    ['DHCR rent reduction', 'You can ask the state to lower rent while repairs wait', 'green'],
+    protectedRow,
+    ['Right to Counsel', 'Free lawyer in an eviction case, if you qualify by income', 'green']
+  ];
+  return `
+    <div class="nav">
+      <button class="back" data-act="close-home">${ICON.back}Cases</button>
+      <h1 class="navtitle" style="margin:0">Your home</h1>
+      <span></span>
+    </div>
+    <div class="page home-page">
+      <div class="hcover"><img src="${b.photo}" alt="The building's front windows"><span class="hcover-tag">Sample photo</span></div>
+      <div class="hhead"><span class="sugic">${ICON.house}</span><span class="sugtxt" style="flex:1"><b style="font-size:19px">${esc(b.address)}</b><span>${esc(b.area)}</span></span></div>
+      <div class="hgrid">${b.facts.map(([k, v]) => `<div class="ftile"><span class="sub">${esc(k)}</span><b style="font-size:16px">${esc(v)}</b></div>`).join('')}</div>
+
+      <span class="hlabel">Building record</span>
+      <div class="hcard">
+        <div class="hstat"><b>${rec.open}</b><span>open HPD violations</span><span class="stage orange" style="margin:0">${rec.classC} Class C</span></div>
+        <div class="hstat"><b>${rec.complaints}</b><span>311 complaints in the last year</span></div>
+        <div class="hline"><span class="sub">Most reported</span><span>${esc(rec.top)}</span></div>
+        <span class="sub" style="line-height:1.4">From NYC Open Data. Sample numbers in this prototype.</span>
+      </div>
+
+      <span class="hlabel">Who lives here</span>
+      <div class="hcard hlist">
+        ${HOUSEHOLD.map(([key, title, why]) => `<label class="hrow"><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px">${esc(title)}</span><span class="sub">${esc(why)}</span></span><input type="checkbox" class="switch" data-home="${key}"${S.home[key] ? ' checked' : ''}></label>`).join('')}
+      </div>
+      <span class="sub" style="padding:6px 4px 0;line-height:1.4">Tenard uses these answers so it doesn't have to ask again in every case.</span>
+
+      <span class="hlabel">Your rights here</span>
+      <div class="hcard hlist">
+        ${rights.map(([t, d, c]) => `<div class="hrow"><span class="hdot ${c}"></span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">${esc(t)}</span><span class="sub">${esc(d)}</span></span></div>`).join('')}
+      </div>
+
+      <span class="hlabel">Landlord</span>
+      <div class="hcard hlist">
+        <div class="hrow"><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span class="sub">Owner or management</span><span style="font-size:15px">${esc(b.owner)}</span></span></div>
+        <div class="hrow"><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span class="sub">Email for letters</span><span style="font-size:15px;color:var(--muted)">Not added yet</span></span><button class="fadd">Add</button></div>
+      </div>
+      <button class="fbtn" style="align-self:flex-start;margin:16px 0 8px">Change address</button>
+    </div>`;
 }
 function set(patch, botDelay) {
   if (botDelay) {
@@ -627,6 +730,7 @@ function msgHTML(x) {
         <div class="fhead"><span class="sugic">${ICON.list}</span><span class="sugtxt" style="flex:1"><b>Evidence for court</b><span>${done} of ${items.length} ready</span></span></div>
         <div class="progress"><div style="width:${Math.round(done / items.length * 100)}%;background:var(--yellow)"></div></div>
         <div class="flist">${items.map(([label, ok]) => `<div class="fitem"><span class="fcheck${ok ? ' ok' : ''}">${ok ? ICON.check : ''}</span><span style="flex:1${ok ? '' : ';color:var(--soft)'}">${esc(label)}</span>${ok ? '' : '<button class="fadd">Add</button>'}</div>`).join('')}</div>
+        <button class="frule" data-act="checklist"><span>Open the full checklist</span>${ICON.arrowNE}</button>
       </div></div>`;
     }
     case 'file': return `<div class="row"><div class="card fcard">
@@ -698,6 +802,42 @@ function chatView(conv) {
     </form>`;
 }
 
+/* What HPD or Housing Court will want to see, and whether the case has it yet. */
+function evidenceItems(kase) {
+  const g = kase.stage, has = (k) => S.docs.includes(k);
+  return [
+    { label: 'Dated photos and video', sub: 'Added in the chat · Nov 21', ok: kase.hasEvidence },
+    { label: 'Your description of the problem', sub: 'Where, since when, who you told', ok: kase.hasEvidence },
+    { label: 'The rule, class and deadline', sub: kase.res ? `${kase.res.cls} · ${kase.res.days}` : 'After the check in the chat', ok: !!kase.res },
+    { label: 'Written notice to landlord', sub: kase.sent ? 'Sent Nov 21' : 'Draft ready in the chat', ok: kase.sent },
+    { label: 'Proof the notice was delivered', sub: 'A sent email, a receipt or a delivery confirmation', ok: has('delivery'), add: 'delivery' },
+    { label: '311 service request number', sub: g.filed ? '311-[number] · filed Dec 5' : 'After you file with 311', ok: g.filed },
+    { label: 'HPD violation number', sub: g.violation ? 'On HPDONLINE · issued Dec 18' : 'After an HPD inspection', ok: g.violation },
+    { label: 'Lease and rent receipts', sub: 'Shows you are the tenant and pay rent', ok: has('lease'), add: 'lease' },
+    { label: 'How it affects you', sub: 'Health, rooms you can’t use, costs', ok: has('impact'), add: 'impact' }
+  ];
+}
+function checklistView(kase) {
+  const items = evidenceItems(kase);
+  const ready = items.filter((i) => i.ok).length;
+  return `
+    <div class="nav">
+      <button class="back" data-act="close-checklist">${ICON.back}Case</button>
+      <h1 class="navtitle" style="margin:0">Evidence</h1>
+      <span></span>
+    </div>
+    <div class="page home-page">
+      <div class="hhead" style="margin-top:6px"><span class="sugic">${ICON.list}</span><span class="sugtxt" style="flex:1"><b style="font-size:19px">${ready} of ${items.length} ready</b><span>${esc(kase.title)}</span></span></div>
+      <div class="progress"><div style="width:${Math.round(ready / items.length * 100)}%;background:var(--yellow)"></div></div>
+      <span class="sub" style="margin:12px 4px 0;line-height:1.45;font-size:14px">This is what HPD or a Housing Court judge will want to see. Tenard dates everything and puts it in order for you.</span>
+      <span class="hlabel">Still needed</span>
+      <div class="hcard hlist">${items.filter((i) => !i.ok).map((i) => `<div class="hrow cstep"><span class="cdot"></span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">${esc(i.label)}</span><span class="sub">${esc(i.sub)}</span></span>${i.add ? `<button class="fadd" data-act="add-doc:${i.add}">Add</button>` : '<span class="sub" style="white-space:nowrap">Later</span>'}</div>`).join('') || '<div class="hrow cstep"><span style="font-size:15px">Everything is ready.</span></div>'}</div>
+      <span class="hlabel">Ready</span>
+      <div class="hcard hlist">${items.filter((i) => i.ok).map((i) => `<div class="hrow cstep"><span class="cdot done">${ICON.check}</span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">${esc(i.label)}</span><span class="sub">${esc(i.sub)}</span></span></div>`).join('') || '<div class="hrow cstep"><span class="sub">Nothing yet</span></div>'}</div>
+    </div>
+    <div class="foot"><button class="primary-btn">Export evidence packet (PDF)</button></div>`;
+}
+
 function caseView(kase) {
   if (!kase) return '';
   const r = kase.res;
@@ -715,47 +855,73 @@ function caseView(kase) {
     : kase.hasEvidence ? ['Checking', 'Answer a quick question in the chat']
     : ['Add evidence', 'Photos, video and a short description'];
   const stepNow = g.court ? 4 : (g.violation || g.noViolation) ? 3 : g.filed || g.filing ? 2 : 1;
-  const finding = r ? `<div class="boxed">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="eyebrow">Possible violation</span><span class="chip-lbl">${esc(r.label)}</span></div>
-      <div class="grid2"><div><span class="big">${esc(r.cls)}</span><div class="sub">${esc(r.sub)}</div></div><div><span class="big">${esc(r.days)}</span><div class="sub">${esc(r.daysSub)}</div></div></div>
-      <span style="font-size:13px">NYC Housing Maintenance Code § [section]</span>
-      ${S.type === 'mould' ? '<div style="border-top:1px solid #EEEEEE;padding-top:8px;display:flex;justify-content:space-between;font-size:13px"><span>Water stain (leak)</span><b>Inspector decides</b></div>' : ''}
-    </div>` : kase.diy ? `<div class="boxed"><span class="eyebrow">Result</span><b style="font-size:15px">Not a violation</b><span class="sub" style="font-size:13px">Surface mould on intact tile, grout or caulk is the tenant's to clean. Film again if it spreads.</span></div>`
-    : `<div class="boxed"><span class="eyebrow">Not checked yet</span><span class="sub" style="font-size:13px">${kase.hasEvidence ? 'Answer the question in the chat to finish the check.' : 'Add photos and a description in the chat. Tenard will check it against the rules.'}</span></div>`;
-  const steps = r ? `<div class="section" style="gap:0"><span class="eyebrow" style="padding-bottom:10px">Steps</span>
-      <div class="step"><div class="rail"><span class="dot${kase.sent ? ' done' : ''}">${kase.sent ? ICON.check : '1'}</span><span class="ln"></span></div><div class="txt"><b>Written notice to landlord</b><span>${kase.sent ? 'Sent Nov 21' : 'Ready to send'}</span></div></div>
-      <div class="step"><div class="rail"><span class="dot${g.filed ? ' done' : ''}">${g.filed ? ICON.check : '2'}</span><span class="ln"></span></div><div class="txt"><b>311 complaint → HPD inspection</b><span>${g.filed ? 'Filed Dec 5 · 311-[number]' : 'If not fixed by Dec 5 · HPD aims to inspect within 30 days'}</span></div></div>
-      <div class="step"><div class="rail"><span class="dot${g.violation ? ' done' : ''}">${g.violation ? ICON.check : '3'}</span><span class="ln"></span></div><div class="txt"><b>HPD issues a violation</b><span>${g.violation ? `${g.vClass} · issued Dec 18 · fix by ${g.dueDate}` : g.noViolation ? 'Inspected Dec 18 · no violation issued' : "The landlord's deadline starts"}</span></div></div>
-      <div class="step"><div class="rail"><span class="dot${g.court ? ' done' : ''}">${g.court ? ICON.check : '4'}</span></div><div class="txt"><b>HP action in Housing Court</b><span>${g.court ? (S.exported ? 'Evidence packet ready for the clerk' : 'Started · export the evidence packet') : "If the violation isn't fixed"}</span></div></div>
+  const [stage, stageColor] = stageOf(kase);
+  const labelColor = r ? ({ 'Settled': 'green', 'Inspector decides': 'blue', 'From HPD records': 'grey', 'Not settled': 'orange' }[r.label] || 'grey') : 'grey';
+  const photo = S.photo || kase.T.photo;
+  const doneSteps = g.resolved ? 4 : (kase.sent ? 1 : 0) + (g.filed ? 1 : 0) + (g.violation || g.noViolation ? 1 : 0) + (g.court ? 1 : 0);
+
+  const finding = r ? `<div class="hcard">
+      <div class="fhead"><span class="sugic">${ICON.scale}</span><span class="sugtxt" style="flex:1"><b>Possible violation</b><span>NYC Housing Maintenance Code § [section]</span></span></div>
+      <div class="grid2"><div class="ftile"><span class="big">${esc(r.cls)}</span><span class="sub">${esc(r.sub)}</span></div><div class="ftile"><span class="big">${esc(r.days)}</span><span class="sub">${esc(r.daysSub)}</span></div></div>
+      <span class="stage ${labelColor}" style="margin:0">${esc(r.label)}</span>
+      ${S.type === 'mould' ? '<div class="hline"><span>Water stain (leak)</span><span class="stage blue" style="margin:0">Inspector decides</span></div>' : ''}
+      <span class="sub" style="line-height:1.4">Not an official finding. Only an HPD inspector can issue a violation.</span>
+    </div>`
+    : kase.diy ? `<div class="hcard"><div class="fhead"><span class="sugic">${TYPE_ICON.mould}</span><span class="sugtxt" style="flex:1"><b>Not a violation</b><span>Yours to clean</span></span></div><span style="font-size:15px;line-height:1.45;color:#333">Surface mould on intact tile, grout or caulk is the tenant's to clean. Film it again if it spreads past the tile.</span></div>`
+    : `<div class="hcard"><span style="font-size:15px;line-height:1.45;color:#333">${kase.hasEvidence ? 'Answer the question in the chat to finish the check.' : 'Add photos and a description in the chat. Tenard will check it against the rules.'}</span></div>`;
+
+  const step = (done, current, n, title, sub) => `<div class="hrow cstep"><span class="cdot${done ? ' done' : current ? ' now' : ''}">${done ? ICON.check : n}</span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">${title}</span><span class="sub">${sub}</span></span></div>`;
+  const steps = r ? `<span class="hlabel">Steps</span><div class="hcard hlist">
+      ${step(kase.sent, !kase.sent, 1, 'Written notice to landlord', kase.sent ? 'Sent Nov 21' : 'Draft ready in the chat')}
+      ${step(g.filed, kase.sent && !g.filed, 2, '311 complaint → HPD inspection', g.filed ? 'Filed Dec 5 · 311-[number]' : 'If not fixed by Dec 5 · HPD aims to inspect within 30 days')}
+      ${step(g.violation, g.filed && !g.violation && !g.noViolation, 3, 'HPD issues a violation', g.violation ? `${g.vClass} · issued Dec 18 · fix by ${g.dueDate}` : g.noViolation ? 'Inspected Dec 18 · no violation issued' : "The landlord's deadline starts here")}
+      ${step(g.court, (g.violation || g.noViolation) && !g.court, 4, 'HP action in Housing Court', g.court ? (S.exported ? 'Evidence packet ready for the clerk' : 'Started · export the evidence packet') : "If the violation isn't fixed")}
     </div>` : '';
-  const ready = (kase.hasEvidence ? 1 : 0) + (r ? 1 : 0) + (kase.sent ? 1 : 0) + (S.type === 'mould' ? 1 : 0) + (g.filed ? 1 : 0) + (g.violation ? 1 : 0);
+
+  const items = evidenceItems(kase);
+  const ready = items.filter((i) => i.ok).length;
+  const evidence = r ? `<span class="hlabel">Evidence</span><button class="hcard hcard-btn" data-act="checklist">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;width:100%"><b style="font-size:16px">${ready} of ${items.length} ready</b><span class="sub">for HPD or Housing Court</span></div>
+      <div class="progress" style="width:100%"><div style="width:${Math.round(ready / items.length * 100)}%;background:var(--yellow)"></div></div>
+      <span class="frule" style="width:100%"><span>Open the checklist</span>${ICON.arrowNE}</span>
+    </button>` : '';
+
+  const tl = [];
+  if (g.resolved) tl.push(['Repair confirmed with a photo', g.fixedOn]);
+  if (g.court) tl.push(['HP action started', g.noViolation ? 'Jan 5' : g.dueDate]);
+  if (g.violation) tl.push([`HPD ${g.vClass} violation issued`, 'Dec 18']);
+  if (g.noViolation) tl.push(['HPD inspection: no violation', 'Dec 18']);
+  if (g.filed) tl.push(['311 complaint filed', 'Dec 5']);
+  if (kase.sent) tl.push(['Notice sent to landlord', 'Nov 21']);
+  if (kase.hasEvidence) tl.push(['Photos and description added', 'Nov 21']);
+  tl.push(['Case started', 'Nov 21']);
+  if (S.type === 'mould') tl.push(['Texted the super (2nd time)', 'Oct 28'], ['Texted the super', 'Oct 14']);
+
   return `
     <div class="nav">
       <button class="back" data-act="chat">${ICON.back}Chat</button>
       <span class="navtitle">Case</span>
       <button class="navbtn" aria-label="Your cases, ${openCount(kase)} open" data-act="cases">${ICON.doc}<span class="count" aria-hidden="true">${openCount(kase)}</span></button>
     </div>
-    <div class="page">
-      <div class="section" style="gap:4px"><h1 style="margin:0;font-size:24px">${esc(kase.title)}</h1><span class="sub" style="font-size:13px">1415 Morris Ave, Apt 4B · started Nov 21</span></div>
-      <div class="boxed strong" style="flex-direction:row;justify-content:space-between;align-items:center;padding:12px 14px">
-        <span style="display:flex;flex-direction:column;gap:2px"><b style="font-size:15px">${statusMain}</b><span class="sub" style="font-size:13px">${statusSub}</span></span>
-        ${g.resolved ? '<span class="badge">Closed</span>' : r ? `<span class="badge">Step ${stepNow} of 4</span>` : ''}</div>
-      ${kase.hasEvidence ? `<div class="ph" style="margin:14px 20px 0;height:180px">${(S.photo || kase.T.photo) ? `<img src="${S.photo || kase.T.photo}" alt="Evidence photo">` : ICON.xph(350, 150)}<span class="tag">Evidence · Nov 21</span></div>`
-        : `<button class="boxed" data-act="chat" style="background:#fff;align-items:center;border-style:dashed;min-height:110px;justify-content:center">${ICON.plus(22)}<b style="font-size:14px">Add photos or video</b></button>`}
-      ${finding}
-      ${steps}
-      ${r ? `<div class="boxed" style="margin-top:8px;padding:12px 14px;gap:6px"><div style="display:flex;justify-content:space-between;font-size:14px"><b>Evidence: ${ready} of 9 ready</b><span style="text-decoration:underline">Checklist</span></div><div class="progress"><div style="width:${Math.round(ready / 9 * 100)}%"></div></div></div>` : ''}
-      <div class="section"><span class="eyebrow">Timeline</span>
-        ${g.resolved ? `<div class="tl"><span>Repair confirmed with a photo</span><span>${g.fixedOn}</span></div>` : ''}
-        ${g.court ? `<div class="tl"><span>HP action started</span><span>${g.noViolation ? 'Jan 5' : g.dueDate}</span></div>` : ''}
-        ${g.violation ? `<div class="tl"><span>HPD ${g.vClass} violation issued</span><span>Dec 18</span></div>` : ''}
-        ${g.noViolation ? '<div class="tl"><span>HPD inspection: no violation</span><span>Dec 18</span></div>' : ''}
-        ${g.filed ? '<div class="tl"><span>311 complaint filed</span><span>Dec 5</span></div>' : ''}
-        ${kase.sent ? '<div class="tl"><span>Notice sent to landlord</span><span>Nov 21</span></div>' : ''}
-        ${kase.hasEvidence ? '<div class="tl"><span>Photos and description added</span><span>Nov 21</span></div>' : ''}
-        <div class="tl"><span>Case started</span><span>Nov 21</span></div>
-        ${S.type === 'mould' ? '<div class="tl"><span>Texted the super (2nd time)</span><span>Oct 28</span></div><div class="tl"><span>Texted the super</span><span>Oct 14</span></div>' : ''}
+    <div class="page home-page">
+      <div class="hhead" style="margin-top:6px"><span class="sugic">${TYPE_ICON[S.type]}</span><span class="sugtxt" style="flex:1;white-space:normal"><b style="font-size:20px;white-space:normal">${esc(kase.title)}</b><span>1415 Morris Ave, Apt 4B · started Nov 21</span></span></div>
+
+      <div class="hcard">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="stage ${stageColor}" style="margin:0">${esc(stage)}</span><span class="sub">${g.resolved ? 'Closed' : r ? `Step ${stepNow} of 4` : ''}</span></div>
+        <div style="display:flex;flex-direction:column;gap:2px">${statusMain !== stage ? `<b style="font-size:17px">${statusMain}</b>` : ''}<span style="font-size:15px;color:#333">${statusSub}</span></div>
+        ${r ? `<div class="segs">${[1, 2, 3, 4].map((n) => `<span class="${n <= doneSteps ? 'on' : n === doneSteps + 1 ? 'now' : ''}"></span>`).join('')}</div>` : ''}
       </div>
+
+      ${kase.hasEvidence
+        ? `<span class="hlabel">Photo</span><div class="hcover" style="height:200px">${photo ? `<img src="${photo}" alt="Evidence photo">` : ''}<span class="hcover-tag">Evidence · Nov 21</span></div>`
+        : `<button class="hcard hadd" data-act="chat">${ICON.plus(22)}<b style="font-size:15px">Add photos or video</b></button>`}
+
+      ${r || kase.diy ? '<span class="hlabel">What we found</span>' : ''}${finding}
+      ${steps}
+      ${evidence}
+
+      <span class="hlabel">Timeline</span>
+      <div class="hcard hlist">${tl.map(([t, d]) => `<div class="hrow" style="min-height:48px;cursor:default"><span style="flex:1;font-size:15px">${esc(t)}</span><span class="sub" style="font-size:14px">${esc(d)}</span></div>`).join('')}</div>
     </div>
     <div class="foot"><button class="primary-btn" data-act="chat">Continue in chat</button>${r ? '<button class="ghost-btn">Export evidence packet (PDF)</button>' : ''}</div>`;
 }
@@ -786,7 +952,7 @@ function sheetView(kase, animate) {
     </div>
     <div class="cases-page">
       <div class="sheet-body">
-        <button class="home"><span class="sugic">${ICON.house}</span><span class="sugtxt" style="flex:1"><b>1415 Morris Ave, Apt 4B</b><span>Bronx · rent-stabilized · built 1928</span></span>${ICON.chev}</button>
+        <button class="home" data-act="home"><span class="sugic">${ICON.house}</span><span class="sugtxt" style="flex:1"><b>1415 Morris Ave, Apt 4B</b><span>Bronx · rent-stabilized · built 1928</span></span>${ICON.chev}</button>
         <span class="eyebrow" style="padding-top:6px">Open</span>
         ${current}
         ${card('Kitchen sink leak', '311 filed Nov 2 · inspector decides the class', 'Inspection pending', 'blue')}
@@ -820,7 +986,7 @@ function render() {
   const app = document.getElementById('app');
   const conv = conversation();
   lastChips = conv.chips;
-  const base = S.view === 'cases' ? sheetView(conv.kase)
+  const base = S.view === 'checklist' && conv.kase ? checklistView(conv.kase) : S.view === 'home' ? homeView() : S.view === 'cases' ? sheetView(conv.kase)
     : S.view === 'case' && conv.kase ? caseView(conv.kase) : chatView(conv);
   app.innerHTML = STATUS_BAR + base + '<div class="homebar" aria-hidden="true"></div>';
   const sc = document.getElementById('scroll');
@@ -852,6 +1018,11 @@ document.addEventListener('click', (e) => {
   else if (act === 'cases') set({ prevView: S.view, view: 'cases' });
   else if (act === 'close-sheet') set({ view: S.prevView || 'chat' });
   else if (act === 'toggle-closed') set({ showClosed: !S.showClosed });
+  else if (act === 'home') set({ view: 'home' });
+  else if (act === 'checklist') set({ view: 'checklist' });
+  else if (act === 'close-checklist') set({ view: 'case' });
+  else if (act.startsWith('add-doc:')) { S.awaitDoc = act.split(':')[1]; S.awaitVerify = false; document.getElementById('file').click(); }
+  else if (act === 'close-home') set({ view: 'cases' });
   else if (act === 'open-case') set({ view: 'case' });
   else if (act === 'chat') set({ view: 'chat' });
   else if (act === 'new') { archiveCurrent(); set(Object.assign({ view: 'chat' }, FRESH)); }
@@ -863,11 +1034,19 @@ document.addEventListener('click', (e) => {
   else if (act === 'reset') {
     try { localStorage.removeItem(STORE); } catch (err) { /* nothing saved */ }
     S.cases = [];
+    S.home = Object.assign({}, HOME_DEFAULT);
     set(Object.assign({ view: 'chat', showClosed: false }, FRESH));
   }
   else if (act === 'attach') { S.awaitVerify = !!(S.fixed && !S.verified); document.getElementById('file').click(); }
   else if (act === 'copy') a.textContent = 'Copied';
   else if (act === 'mail') a.textContent = 'Opening…';
+});
+
+document.addEventListener('change', (e) => {
+  const key = e.target.dataset && e.target.dataset.home;
+  if (!key) return;
+  S.home[key] = e.target.checked;
+  render();
 });
 
 document.addEventListener('submit', (e) => {
@@ -889,6 +1068,7 @@ document.getElementById('file').addEventListener('change', (e) => {
   if (!f) return;
   const url = URL.createObjectURL(f);
   e.target.value = '';
+  if (S.awaitDoc) { const key = S.awaitDoc; S.awaitDoc = null; set({ docs: S.docs.concat(key) }); return; }
   if (S.awaitVerify) { set({ verified: true, afterPhoto: url, awaitVerify: false }, 700); return; }
   const typed = document.getElementById('msg') ? document.getElementById('msg').value.trim() : '';
   const patch = Object.assign({ photo: url }, typed ? { desc2: typed } : {});
