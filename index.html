@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root { --ink: #3B221C; --muted: #6E6259; --soft: #4E4039; --line: #ECE4D8; --line2: #DCD1C1; --bubble: #FDF1D8; --bg: #FFFCF7; --cream: #FDF1D8; --accent: #3B221C; --desk: #E8E4DC; }
+  :root { --ink: #111111; --muted: #6B6B6B; --soft: #3A3A3A; --line: #E6E6E6; --line2: #D6D6D6; --bubble: #EEEEEE; --bg: #FFFFFF; --cream: #EEEEEE; --accent: #111111; --yellow: #F6D04D; --desk: #E3E3E3; }
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; background: var(--desk); font-family: Inter, system-ui, sans-serif; color: var(--ink); }
   body { display: flex; align-items: center; justify-content: center; }
@@ -25,10 +25,10 @@
   .row.me { justify-content: flex-end; }
   .bot { max-width: 86%; background: var(--bubble); border-radius: 14px 14px 14px 4px; padding: 10px 12px; font-size: 15px; line-height: 1.45; white-space: pre-line; }
   .user { max-width: 80%; background: var(--ink); color: var(--cream); border-radius: 14px 14px 4px 14px; padding: 10px 12px; font-size: 15px; line-height: 1.45; }
-  .ph { position: relative; overflow: hidden; background: #F7F1E7; border: 1px solid #B3A595; border-radius: 12px; }
+  .ph { position: relative; overflow: hidden; background: #F2F2F2; border: 1px solid #B5B5B5; border-radius: 12px; }
   .ph svg { position: absolute; inset: 0; }
   .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .tag { position: absolute; bottom: 8px; left: 8px; font-size: 11px; background: #fff; border: 1px solid #B3A595; border-radius: 6px; padding: 2px 6px; }
+  .tag { position: absolute; bottom: 8px; left: 8px; font-size: 11px; background: #fff; border: 1px solid #B5B5B5; border-radius: 6px; padding: 2px 6px; }
   .card { width: 300px; border: 1.5px solid var(--ink); border-radius: 12px; background: #fff; overflow: hidden; }
   .pad { padding: 14px; display: flex; flex-direction: column; gap: 10px; }
   .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
@@ -39,26 +39,26 @@
   .sub { font-size: 12px; color: var(--muted); }
   .sys { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--soft); border: 0; background: none; padding: 6px 0; }
   .sys::before, .sys::after { content: ""; flex: 1; height: 1px; background: var(--line2); }
-  .sug { display: flex; gap: 12px; align-items: center; width: 100%; min-height: 56px; padding: 8px 12px; border: 0; border-top: 1px solid #F0E9DE; background: #fff; text-align: left; }
-  .sug:hover { background: #FBF5EA; }
+  .sug { display: flex; gap: 12px; align-items: center; width: 100%; min-height: 56px; padding: 8px 12px; border: 0; border-top: 1px solid #EEEEEE; background: #fff; text-align: left; }
+  .sug:hover { background: #F6F6F6; }
   .sug .plus { width: 32px; height: 32px; flex-shrink: 0; border-radius: 16px; border: 1.5px solid var(--ink); display: flex; align-items: center; justify-content: center; }
   .sug b { display: block; font-size: 15px; }
   .btnrow { display: flex; border-top: 1px solid var(--line); }
   .btnrow button { flex: 1; height: 44px; border: 0; border-right: 1px solid var(--line); background: #fff; font-size: 14px; font-weight: 500; }
   .btnrow button.primary { flex: 1.4; background: var(--ink); color: var(--cream); font-weight: 600; border-right: 0; }
-  .shop { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-top: 1px solid #F0E9DE; text-decoration: none; }
-  .shop .th { width: 44px; height: 44px; border: 1px solid #B3A595; border-radius: 6px; flex-shrink: 0; }
+  .shop { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-top: 1px solid #EEEEEE; text-decoration: none; }
+  .shop .th { width: 44px; height: 44px; border: 1px solid #B5B5B5; border-radius: 6px; flex-shrink: 0; }
   .shop b { display: block; font-size: 14px; }
   .chips { flex-shrink: 0; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; padding: 8px 16px; }
   .chip { min-height: 40px; border: 1.5px solid var(--ink); border-radius: 999px; background: #fff; padding: 0 14px; font-size: 14px; font-weight: 600; }
   .chip.dark { background: var(--ink); color: var(--cream); }
   .input { flex-shrink: 0; display: flex; align-items: center; gap: 8px; padding: 8px 12px 20px; border-top: 1px solid var(--line); }
-  .input input[type=text] { flex: 1; min-width: 0; height: 44px; border: 1px solid #B3A595; border-radius: 22px; padding: 0 16px; font: inherit; font-size: 15px; }
+  .input input[type=text] { flex: 1; min-width: 0; height: 44px; border: 1px solid #B5B5B5; border-radius: 22px; padding: 0 16px; font: inherit; font-size: 15px; }
   .round { width: 44px; height: 44px; flex-shrink: 0; border-radius: 22px; display: flex; align-items: center; justify-content: center; }
-  .round.out { border: 1px solid #B3A595; background: #fff; }
+  .round.out { border: 1px solid #B5B5B5; background: #fff; }
   .round.fill { border: 0; background: var(--ink); color: var(--cream); }
   .typing { display: inline-flex; gap: 4px; }
-  .typing i { width: 6px; height: 6px; border-radius: 3px; background: #B3A595; animation: b 1s infinite; }
+  .typing i { width: 6px; height: 6px; border-radius: 3px; background: #B5B5B5; animation: b 1s infinite; }
   .typing i:nth-child(2) { animation-delay: .15s; } .typing i:nth-child(3) { animation-delay: .3s; }
   @keyframes b { 0%, 80%, 100% { opacity: .3; } 40% { opacity: 1; } }
   .page { flex: 1; min-height: 0; overflow-y: auto; padding-bottom: 8px; }
@@ -76,12 +76,12 @@
   .tl span:last-child { color: var(--muted); }
   .foot { flex-shrink: 0; padding: 12px 20px 20px; display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--line); }
   .primary-btn { height: 52px; border: 0; border-radius: 10px; background: var(--ink); color: var(--cream); font-size: 16px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; }
-  .ghost-btn { height: 44px; border: 1px solid #B3A595; border-radius: 10px; background: #fff; font-size: 15px; font-weight: 500; }
+  .ghost-btn { height: 44px; border: 1px solid #B5B5B5; border-radius: 10px; background: #fff; font-size: 15px; font-weight: 500; }
   .casecard { border: 1.5px solid var(--ink); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 6px; background: #fff; text-align: left; width: 100%; }
   .casecard.quiet { border: 1px solid var(--line2); }
   .casecard.closed { border: 1px solid var(--line); }
   .bar2 { height: 56px; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 8px; border-bottom: 1px solid var(--line); }
-  .progress { height: 6px; background: #EEE6DA; border-radius: 3px; overflow: hidden; }
+  .progress { height: 6px; background: #E6E6E6; border-radius: 3px; overflow: hidden; }
   .progress div { height: 6px; background: var(--ink); }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   /* ---------- iOS conventions ---------- */
@@ -98,7 +98,7 @@
   .navbtn { width: 44px; height: 44px; border-radius: 22px; border: 0; background: var(--cream); color: var(--ink); display: flex; align-items: center; justify-content: center; position: relative; }
   .navbtn .count { position: absolute; top: -2px; right: -2px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; border: 2px solid var(--bg); background: var(--accent); color: var(--cream); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
   .back { height: 44px; border: 0; background: none; padding: 0 8px 0 0; display: flex; align-items: center; gap: 6px; font-size: 17px; color: var(--ink); }
-  .pin { margin: 2px 16px 0; flex-shrink: 0; display: flex; align-items: center; gap: 12px; min-height: 60px; padding: 10px 12px; border: 1px solid #EBDDBF; border-radius: 16px; background: var(--cream); text-align: left; color: var(--ink); box-shadow: 0 6px 16px -10px rgba(59, 34, 28, .35); position: relative; z-index: 1; margin-bottom: 4px; }
+  .pin { margin: 2px 16px 0; flex-shrink: 0; display: flex; align-items: center; gap: 12px; min-height: 60px; padding: 10px 12px; border: 1px solid #E4E4E4; border-radius: 16px; background: var(--cream); text-align: left; color: var(--ink); box-shadow: 0 6px 16px -10px rgba(0, 0, 0, .35); position: relative; z-index: 1; margin-bottom: 4px; }
   .pin .ic { width: 38px; height: 38px; border-radius: 10px; background: var(--accent); color: var(--cream); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .pin .ic svg { width: 20px; height: 20px; }
   .pin b { display: block; font-size: 16px; letter-spacing: -.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -114,25 +114,46 @@
   .ghost-btn { height: 50px; border-radius: 14px; font-size: 17px; }
   .sheet-head { display: grid !important; grid-template-columns: 1fr auto 1fr; padding: 0 12px 8px 20px !important; }
   .sheet-head .done { justify-self: end; height: 44px; border: 0; background: none; font-size: 17px; font-weight: 600; color: var(--ink); padding: 0 8px; }
+  /* pinned case card floats over the chat, with a fade underneath */
+  /* the chat runs up under the status bar and nav; nav + case card float on top */
+  .phone { --top: 106px; }
+  @media (max-width: 500px) { .phone { --top: 52px; } }
+  .statusbar, .nav { position: relative; z-index: 4; }
+  .chatarea { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; margin-top: calc(-1 * var(--top)); }
+  .chatarea .scroll { flex: 1; padding-top: calc(var(--top) + 16px); }
+  .pinwrap { position: absolute; top: 0; left: 0; right: 0; z-index: 2; padding: calc(var(--top) + 12px) 16px 40px; pointer-events: none;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, .94) 0%, rgba(255, 255, 255, .72) 40%, rgba(255, 255, 255, .6) 72%, rgba(255, 255, 255, 0) 100%); }
+  .pinwrap .pin { pointer-events: auto; margin: 0; width: 100%; }
+  .chatarea .scroll.haspin { padding-top: calc(var(--top) + 104px); }
+  /* product cards (ChatGPT-style, horizontal) */
+  .prodwrap { display: flex; flex-direction: column; gap: 8px; margin: 2px -16px; }
+  .prodcap { padding: 0 16px; font-size: 13px; color: var(--muted); }
+  .prodrow { display: flex; gap: 10px; overflow-x: auto; padding: 0 16px 6px; scroll-padding: 0 16px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .prodrow::-webkit-scrollbar { display: none; }
+  .prod { flex: 0 0 auto; width: 168px; scroll-snap-align: start; display: flex; flex-direction: column; padding: 8px 8px 14px; border: 1px solid #E6E6E6; border-radius: 22px; background: #FAFAFA; text-decoration: none; color: var(--ink); }
+  .prodimg { height: 144px; border: 1px solid #ECECEC; border-radius: 16px; background: #fff; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+  .prodname { margin: 0 6px; font-size: 16px; line-height: 1.3; letter-spacing: -.3px; font-weight: 600; text-decoration: underline dotted; text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
+  .prodsub { margin: 6px 6px 0; font-size: 14px; color: var(--muted); }
+  .prodprice { margin: 10px 6px 0; font-size: 19px; font-weight: 500; letter-spacing: -.3px; }
   /* empty state */
   .hero { flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 0 36px 24px; text-align: center; }
-  .hero-mark { width: 76px; height: 76px; border-radius: 26px; background: var(--accent); color: var(--cream); display: flex; align-items: center; justify-content: center; margin-bottom: 18px; box-shadow: 0 16px 30px -14px rgba(59, 34, 28, .55); }
+  .hero-mark { width: 76px; height: 76px; border-radius: 26px; background: var(--accent); color: var(--cream); display: flex; align-items: center; justify-content: center; margin-bottom: 18px; box-shadow: 0 16px 30px -14px rgba(0, 0, 0, .55); }
   .hero-mark svg { width: 36px; height: 36px; }
   .hero-date { font-size: 15px; color: var(--muted); }
   .hero h1 { margin: 0; font-size: 28px; line-height: 1.15; font-weight: 700; letter-spacing: -.7px; color: var(--ink); }
   .hero p { margin: 0; font-size: 16px; line-height: 1.4; color: var(--muted); }
   .sugrow { flex-shrink: 0; display: flex; gap: 10px; overflow-x: auto; padding: 4px 16px 12px; scroll-padding: 0 16px; scroll-snap-type: x mandatory; scrollbar-width: none; }
   .sugrow::-webkit-scrollbar { display: none; }
-  .sugcard { flex: 0 0 auto; width: 272px; scroll-snap-align: start; display: flex; align-items: center; gap: 12px; padding: 12px 14px 12px 12px; border: 1px solid #EFE4D2; border-radius: 22px; background: #fff; text-align: left; color: var(--ink); box-shadow: 0 6px 18px -12px rgba(59, 34, 28, .35); }
+  .sugcard { flex: 0 0 auto; width: 272px; scroll-snap-align: start; display: flex; align-items: center; gap: 12px; padding: 12px 14px 12px 12px; border: 1px solid #E6E6E6; border-radius: 22px; background: #fff; text-align: left; color: var(--ink); box-shadow: 0 6px 18px -12px rgba(0, 0, 0, .35); }
   .sugic { width: 46px; height: 46px; flex-shrink: 0; border-radius: 14px; background: var(--cream); color: var(--accent); display: flex; align-items: center; justify-content: center; }
   .sugtxt { display: flex; flex-direction: column; min-width: 0; }
   .sugtxt b { font-size: 16px; letter-spacing: -.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sugtxt span { font-size: 14px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   /* composer */
-  .composer { flex-shrink: 0; margin: 0 16px 34px; padding: 14px 10px 10px 18px; border: 1px solid #EFE4D2; border-radius: 28px; background: #fff; box-shadow: 0 10px 28px -16px rgba(59, 34, 28, .4); display: flex; flex-direction: column; gap: 10px; }
+  .composer { flex-shrink: 0; margin: 0 16px 34px; padding: 14px 10px 10px 18px; border: 1px solid #E6E6E6; border-radius: 28px; background: #fff; box-shadow: 0 10px 28px -16px rgba(0, 0, 0, .4); display: flex; flex-direction: column; gap: 10px; }
   .composer input { border: 0; outline: 0; padding: 4px 8px 4px 0; font: inherit; font-size: 17px; letter-spacing: -.3px; color: var(--ink); background: transparent; }
-  .composer input::placeholder { color: #A99C8C; }
-  .composer:focus-within { border-color: #D8C6A6; }
+  .composer input::placeholder { color: #A3A3A3; }
+  .composer:focus-within { border-color: #BDBDBD; }
   .composer-row { display: flex; align-items: center; gap: 8px; margin-left: -8px; }
   .cbtn { width: 40px; height: 40px; border-radius: 20px; border: 0; background: var(--cream); color: var(--ink); display: flex; align-items: center; justify-content: center; }
   .cbtn.bare { background: transparent; color: var(--muted); }
@@ -142,21 +163,51 @@
   .phone .sheet { border-radius: 38px 38px 0 0; }
   .phone .handle span { width: 36px; }
   .icon.doc { background: var(--cream); }
-  .scrim { position: absolute; inset: 0; border: 0; padding: 0; background: rgba(59, 34, 28, .38); z-index: 5; cursor: default; }
-  .sheet { position: absolute; left: 0; right: 0; bottom: 0; height: 86%; z-index: 6; background: var(--bg); border-radius: 28px 28px 0 0; box-shadow: 0 -10px 40px rgba(59, 34, 28, .18); display: flex; flex-direction: column; }
+  .scrim { position: absolute; inset: 0; border: 0; padding: 0; background: rgba(0, 0, 0, .38); z-index: 5; cursor: default; }
+  .sheet { position: absolute; left: 0; right: 0; bottom: 0; height: 86%; z-index: 6; background: var(--bg); border-radius: 28px 28px 0 0; box-shadow: 0 -10px 40px rgba(0, 0, 0, .18); display: flex; flex-direction: column; }
   .scrim.in { animation: fade .22s ease-out; }
   .sheet.in { animation: rise .28s cubic-bezier(.2, .8, .2, 1); }
   @keyframes fade { from { opacity: 0; } }
   @keyframes rise { from { transform: translateY(100%); } }
   @media (prefers-reduced-motion: reduce) { .scrim.in, .sheet.in { animation: none; } }
   .handle { align-self: center; width: 80px; height: 24px; border: 0; background: none; display: flex; align-items: center; justify-content: center; }
-  .handle span { width: 40px; height: 5px; border-radius: 3px; background: #D3C7B6; }
+  .handle span { width: 40px; height: 5px; border-radius: 3px; background: #CFCFCF; }
   .sheet-head { display: flex; align-items: center; justify-content: space-between; padding: 0 8px 6px 20px; }
   .sheet-body { flex: 1; min-height: 0; overflow-y: auto; padding: 6px 20px 12px; display: flex; flex-direction: column; gap: 10px; }
   .sheet-foot { padding: 12px 20px 22px; }
   .sheet-foot .primary-btn { width: 100%; }
-  .home { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 12px; background: var(--cream); }
+  .home { width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px 14px 12px 12px; border: 1px solid #E6E6E6; border-radius: 22px; background: #fff; text-align: left; color: var(--ink); box-shadow: 0 6px 18px -12px rgba(0, 0, 0, .35); }
   .badge { font-size: 12px; font-weight: 600; border: 1px solid var(--ink); border-radius: 6px; padding: 2px 6px; white-space: nowrap; }
+  /* reply suggestions: stacked outline pills with an arrow */
+  .phone .chips { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 8px; padding: 6px 16px 12px; }
+  .phone .chip { display: inline-flex; align-items: center; gap: 14px; min-height: 40px; padding: 0 16px 0 20px; border: 1.5px solid #D9D9D9; border-radius: 999px; background: #fff; color: #555; font-size: 16px; font-weight: 500; letter-spacing: -.2px; }
+  .phone .chip svg { color: #666; flex-shrink: 0; }
+  .phone .chip:hover { border-color: #BDBDBD; color: #222; }
+  .phone .chip.dark { border-color: var(--yellow); background: var(--yellow); color: #111; }
+  .phone .chip.dark svg { color: #111; }
+  .casecard { gap: 4px; border: 1px solid #E3E3E3; border-radius: 18px; color: var(--ink); }
+  .stage { align-self: flex-start; margin-top: 8px; font-size: 13px; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
+  .stage.yellow { background: #F6D04D; color: #111; }
+  .stage.blue { background: #DCE8FB; color: #1B4B9B; }
+  .stage.orange { background: #FDE3CC; color: #8A3B0B; }
+  .stage.red { background: #FBDADA; color: #8F1D1D; }
+  .stage.green { background: #DDF2E2; color: #1E6B34; }
+  .stage.grey { background: #EEEEEE; color: #444; }
+  .closed-toggle { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 44px; margin-top: 4px; padding: 0 4px; border: 0; background: none; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  .closed-toggle .chev { display: flex; transition: transform .2s; }
+  .closed-toggle .chev.open { transform: rotate(90deg); }
+  .cbtn.wide { width: auto; padding: 0 16px 0 12px; gap: 8px; font-size: 15px; font-weight: 600; letter-spacing: -.2px; }
+  /* ---------- accent: yellow on black, white and grey ---------- */
+  .user { background: var(--yellow); color: #111111; }
+  .csend { background: var(--yellow); color: #111111; }
+  .pin .ic { background: var(--yellow); color: #111111; }
+  .pin { background: #F4F4F4; border-color: #E6E6E6; }
+  .navbtn .count { background: var(--yellow); color: #111111; border-color: #FFFFFF; }
+  .chip.dark { background: var(--yellow); border-color: var(--yellow); color: #111111; }
+  .sugic { background: var(--yellow); color: #111111; }
+  .btnrow button.primary { background: var(--yellow); color: #111111; }
+  .chip-lbl { border-color: #111111; }
+  .bot { background: #EFEFEF; }
 </style>
 </head>
 <body>
@@ -165,6 +216,8 @@
 
 <script>
 const ICON = {
+  arrowNE: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>',
+  house: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5L12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg>',
   mic: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',
   arrowUp: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>',
   compose: '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6"/><path d="M17.5 3.5a2.1 2.1 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>',
@@ -178,7 +231,7 @@ const ICON = {
   send: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
   check: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>',
   plus: (s) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>`,
-  xph: (w, h) => `<svg width="100%" height="100%" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0L${w} ${h}M${w} 0L0 ${h}" stroke="#E3D8C8" stroke-width="1"/></svg>`
+  xph: (w, h) => `<svg width="100%" height="100%" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0L${w} ${h}M${w} 0L0 ${h}" stroke="#DDDDDD" stroke-width="1"/></svg>`
 };
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const HPD = "from HPD's violation";
@@ -186,25 +239,28 @@ const HPD = "from HPD's violation";
 /* ---------- problem types: questions and outcomes from Eric's decision tree ---------- */
 const TYPES = {
   mould: {
-    label: 'Mould', hint: 'Class depends on the size', title: 'Mould', where: 'Bathroom, ceiling', tag: 'Video · 0:14 · bathroom ceiling',
+    label: 'Mould', hint: 'Class depends on the size', title: 'Mould', where: 'Bathroom, ceiling', tag: 'Photo · bathroom ceiling',
+    photo: 'img/mould.jpg', photoFixed: 'img/mould-fixed.jpg',
     desc: "Water's been coming through my bathroom ceiling since October. I texted the super twice, nothing.",
     ask: 'Add photos or a video of the mould, with something for scale in the frame (a door, your hand). Then tell me where it is, since when, and who you told.'
   },
   leak: {
-    label: 'Leak or water damage', hint: 'An inspector decides the class', title: 'Leak', where: 'Kitchen, ceiling', tag: 'Video · 0:09 · kitchen ceiling',
-    desc: 'Water drips from the kitchen ceiling light every time the upstairs neighbour showers. Started last week.',
+    label: 'Leak or water damage', hint: 'An inspector decides the class', title: 'Leak', where: 'Bathroom, ceiling', tag: 'Photo · bathroom ceiling light',
+    photo: 'img/leak.jpg',
+    desc: 'Water drips from the bathroom ceiling light every time the upstairs neighbour showers. Started last week.',
     ask: 'Add a photo or video of where the water comes in and any stains. Then tell me since when and who you told.',
-    see: 'I can see water dripping from around the ceiling light, with a brown stain about 2 ft wide.',
+    see: 'I can see water dripping straight out of the ceiling light fixture into the bathtub.',
     q: 'Is water coming in right now, or only sometimes?',
     opts: [{ label: 'Right now', r: 0 }, { label: 'Only sometimes', r: 0 }],
-    res: [{ title: 'Kitchen ceiling leak', cls: 'A, B or C', sub: 'Depends on how bad it is', days: 'Inspector', daysSub: 'sets the deadline', label: 'Inspector decides',
+    res: [{ title: 'Bathroom ceiling leak', cls: 'A, B or C', sub: 'Depends on how bad it is', days: 'Inspector', daysSub: 'sets the deadline', label: 'Inspector decides',
       say: 'Your landlord has to fix leaks. An HPD inspector decides how serious it is, and that sets the deadline.\n\nWater near a light fixture: switch that light off until it is checked.' }]
   },
   paint: {
-    label: 'Peeling paint', hint: 'Lead risk with young kids', title: 'Peeling paint', where: 'Bedroom, window', tag: 'Photo · bedroom window',
+    label: 'Peeling paint', hint: 'Lead risk with young kids', title: 'Peeling paint', where: 'Bedroom, window', tag: 'Photo · bedroom window frame',
+    photo: 'img/paint.jpg',
     desc: 'Paint is peeling around the bedroom window and flakes end up on the floor.',
     ask: 'Add a close photo of the peeling paint and one of the whole wall. Then tell me which room and since when.',
-    see: 'I can see peeling paint around the window frame, about 2 sq ft, with flakes on the sill.',
+    see: 'I can see paint flaking off in large patches, down to the bare wood underneath.',
     q: 'Your building was built in 1928. Does a child under 6 live with you?',
     opts: [{ label: 'Yes', r: 0 }, { label: 'No', r: 1 }],
     res: [
@@ -215,24 +271,26 @@ const TYPES = {
     ]
   },
   window: {
-    label: 'Window or window guard', hint: 'Kids 10 or under', title: 'Window guard', where: "Kids' room, window", tag: "Photo · kids' room window",
-    desc: "The window guard in the kids' room fell off a month ago.",
+    label: 'Window or window guard', hint: 'Kids 10 or under', title: 'Window guard', where: 'Front room, window', tag: 'Photo · front windows',
+    photo: 'img/window.jpg',
+    desc: "Our front window has no guard. The one next to it has one.",
     ask: 'Add a photo of the window so the missing guard shows. Then tell me which room and since when.',
-    see: 'I can see an openable window with no guard installed.',
+    see: 'I can see two windows. The one on the right has a guard. The one on the left, above the air conditioner, has none.',
     q: 'Does a child 10 or under live with you?',
     opts: [{ label: 'Yes', r: 0 }, { label: 'No', r: 1 }],
     res: [
-      { title: "Missing window guard, kids' room", cls: 'Class C', sub: 'Immediately hazardous', days: '21 days', daysSub: HPD, label: 'Settled',
+      { title: 'Missing window guard, front room', cls: 'Class C', sub: 'Immediately hazardous', days: '21 days', daysSub: HPD, label: 'Settled',
         say: 'With a child 10 or under, a missing window guard is the most serious class. Keep that window locked until it is fixed.' },
       { title: 'Window guard request', cls: 'Class C', sub: 'once you ask in writing', days: '21 days', daysSub: HPD, label: 'Settled',
         say: "Without a young child, guards aren't automatic. But once you ask your landlord in writing, a missing guard counts as Class C. The letter I draft next makes that request." }
     ]
   },
   detector: {
-    label: 'Smoke or CO detector', hint: 'Missing or not working', title: 'Detector', where: 'Hallway, ceiling', tag: 'Photo · hallway ceiling',
+    label: 'Smoke or CO detector', hint: 'Missing or not working', title: 'Detector', where: 'Hallway, ceiling', tag: 'Photo · hallway smoke detector',
+    photo: 'img/detector.jpg',
     desc: "The smoke detector in the hallway has no light and doesn't beep when I press test.",
     ask: "Add a photo of the detector, and press the test button on video if you can. Then tell me how long it's been like this.",
-    see: 'I can see a smoke detector on the hallway ceiling with no power light.',
+    see: "I can see a smoke detector with its cover off. You said it doesn't beep when you press test.",
     q: 'Which one is it?',
     opts: [{ label: 'Smoke detector', r: 0 }, { label: 'Carbon monoxide', r: 1 }],
     res: [
@@ -251,6 +309,17 @@ const TYPE_ICON = {
   window: TI('<rect x="5" y="3.5" width="14" height="17" rx="1.5"/><path d="M12 3.5v17M5 12h14M8 15.5v5M16 15.5v5"/>'),
   detector: TI('<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 4v1.5M12 18.5V20"/>')
 };
+const PI = (d) => `<svg width="88" height="88" viewBox="0 0 64 64" fill="none" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const PRODUCTS = [
+  { name: 'Mould and mildew remover', sub: 'Spray · [Store]',
+    img: PI('<path d="M24 22h16v34a4 4 0 0 1-4 4H28a4 4 0 0 1-4-4z" fill="#F6D04D"/><path d="M27 22v-6h10v6M30 16v-5h12l4 4h-6"/><path d="M28 36h8M28 42h8"/>') },
+  { name: 'Grout scrub brush', sub: 'Stiff bristles · [Store]',
+    img: PI('<rect x="10" y="26" width="34" height="10" rx="3" fill="#F6D04D"/><path d="M44 31h12"/><path d="M14 36v8M19 36v8M24 36v8M29 36v8M34 36v8M39 36v8"/>') },
+  { name: 'Mould-resistant caulk', sub: 'Bathroom sealant · [Store]',
+    img: PI('<path d="M14 24h30v16H14z" fill="#F6D04D"/><path d="M44 28l10 2v4l-10 2M54 32h4M14 28H8v8h6"/><path d="M22 30h14M22 34h10"/>') },
+  { name: 'Dehumidifier', sub: 'Small room · [Store]',
+    img: PI('<rect x="18" y="12" width="28" height="42" rx="5" fill="#F6D04D"/><path d="M24 20h16M24 25h16M24 30h16"/><circle cx="32" cy="43" r="5"/>') }
+];
 const MOULD_RES = { title: 'Bathroom mould + leak', cls: 'Class B', sub: 'Hazardous · 10–30 sq ft', days: '30 days', daysSub: HPD, label: 'Settled',
   say: 'So yes, this counts. Your landlord has to remove the mould safely and fix the leak causing it. They get 30 days once HPD issues a violation.' };
 
@@ -290,13 +359,12 @@ function conversation() {
   user(S.typedFirst ? S.desc : '+ ' + T.label);
   m.push({ t: 'system', text: T.title });
   bot('Case started. ' + T.ask);
-  if (S.step === 1) chips = [{ label: 'Add photo or video', attach: true }, { label: 'Use a sample photo', go: go({ step: 2 }) }];
 
   let res = null, title = T.title, status = 'New · add evidence', diy = false;
   if (S.step >= 2) {
     const evText = S.desc2 || (S.typedFirst ? null : (S.desc || T.desc));
     if (evText) user(evText);
-    m.push({ t: 'photo', tag: T.tag });
+    m.push({ t: 'photo', tag: T.tag, fallback: T.photo });
     status = 'Checking';
     if (S.type === 'mould') {
       bot('I can see mould on the ceiling, about 15 sq ft, next to a water stain. That usually means a leak from above.\n\nTwo quick questions so I check the right rules.');
@@ -362,9 +430,9 @@ function conversation() {
     user('Fixed');
     bot('Good news. Send a photo of the repaired spot so your case has proof it was done.');
     if (!S.verified) {
-      chips = [{ label: 'Add photo of the repair', attach: true, verify: true }, { label: 'Use a sample photo', go: go({ verified: true }) }];
+      chips = [];
     } else {
-      m.push({ t: 'photo', tag: 'Photo · after the repair', after: true });
+      m.push({ t: 'photo', tag: 'Photo · after the repair', after: true, fallback: T.photoFixed });
       bot('Case closed. It stays in your record, so if the problem comes back you can reopen it with the full history.');
       m.push({ t: 'system', text: title, closed: true });
       status = 'Resolved · ' + when;
@@ -432,7 +500,6 @@ function conversation() {
     chips = S.exported ? [{ label: 'Open my case', dark: true, go: () => set({ view: 'case' }) }] : [{ label: 'Export evidence packet', dark: true, go: go({ exported: true }) }];
   }
 
-  chips.push({ label: 'Start over', go: () => set(Object.assign({}, FRESH)) });
   const stage = {
     filed: !!res && S.step >= 9, violation: !!res && S.step >= 11 && S.insp === 'violation', noViolation: !!res && S.step >= 11 && S.insp === 'none',
     court: !!res && S.step >= 13, resolved: !!res && S.verified, fixedOn, vClass, dueDate, filing: !!res && S.step === 8
@@ -456,10 +523,11 @@ function msgHTML(x) {
       ${Object.entries(TYPES).map(([k, T]) => `<button class="sug" data-type="${k}"><span class="plus">${ICON.plus(16)}</span><span style="flex:1"><b>${esc(T.label)}</b><span class="sub">${esc(T.hint)}</span></span></button>`).join('')}
       </div></div>`;
     case 'photo': {
-      const src = x.after ? S.afterPhoto : S.photo;
-      return `<div class="row me"><div class="ph" style="width:210px;height:150px">${src ? `<img src="${src}" alt="Your photo">` : ICON.xph(210, 150)}<span class="tag">${src ? 'Your upload' : esc(x.tag)}</span></div></div>`;
+      const upload = x.after ? S.afterPhoto : S.photo;
+      const src = upload || x.fallback;
+      return `<div class="row me"><div class="ph" style="width:220px;${src ? '' : 'height:170px'}">${src ? `<img src="${src}" alt="Your photo" style="height:auto;max-height:290px">` : ICON.xph(220, 170)}<span class="tag">${upload ? 'Your upload' : esc(x.tag)}</span></div></div>`;
     }
-    case 'system': return `<button class="sys" data-act="case"><span style="text-align:center;max-width:75%">${x.closed ? 'Case resolved' : 'Case started'}: <b style="color:#3B221C">${esc(x.text)}</b> · Open</span></button>`;
+    case 'system': return `<button class="sys" data-act="case"><span style="text-align:center;max-width:75%">${x.closed ? 'Case resolved' : 'Case started'}: <b style="color:#111111">${esc(x.text)}</b> · Open</span></button>`;
     case 'date': return `<div style="text-align:center;padding:10px 0 2px"><span style="font-size:12px;font-weight:600;color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:3px 10px">${esc(x.text)}</span></div>`;
     case 'complaint': return `<div class="row"><div class="card">
       <div style="padding:10px 12px;border-bottom:1px solid var(--line)"><span class="eyebrow">311 complaint · ready to file</span></div>
@@ -476,11 +544,11 @@ function msgHTML(x) {
       const done = items.filter((i) => i[1]).length;
       return `<div class="row"><div class="card">
         <div style="padding:10px 12px;display:flex;justify-content:space-between;align-items:center"><span class="eyebrow">Evidence for court</span><span class="sub">${done} of ${items.length} ready</span></div>
-        ${items.map(([label, ok]) => `<div style="display:flex;gap:10px;align-items:center;padding:9px 12px;border-top:1px solid #F0E9DE;font-size:14px"><span style="width:20px;height:20px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;${ok ? 'background:#3B221C;color:var(--cream)' : 'border:1.5px solid #3B221C'}">${ok ? ICON.check : ''}</span><span style="flex:1${ok ? '' : ';color:var(--soft)'}">${esc(label)}</span>${ok ? '' : '<span style="font-size:13px;font-weight:600;text-decoration:underline">Add</span>'}</div>`).join('')}
+        ${items.map(([label, ok]) => `<div style="display:flex;gap:10px;align-items:center;padding:9px 12px;border-top:1px solid #EEEEEE;font-size:14px"><span style="width:20px;height:20px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;${ok ? 'background:#111111;color:var(--cream)' : 'border:1.5px solid #111111'}">${ok ? ICON.check : ''}</span><span style="flex:1${ok ? '' : ';color:var(--soft)'}">${esc(label)}</span>${ok ? '' : '<span style="font-size:13px;font-weight:600;text-decoration:underline">Add</span>'}</div>`).join('')}
       </div></div>`;
     }
     case 'file': return `<div class="row"><div class="card" style="display:flex;gap:12px;align-items:center;padding:12px">
-      <span style="width:40px;height:48px;border:1.5px solid #3B221C;border-radius:4px;flex-shrink:0;display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px;font-size:10px;font-weight:700">PDF</span>
+      <span style="width:40px;height:48px;border:1.5px solid #111111;border-radius:4px;flex-shrink:0;display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px;font-size:10px;font-weight:700">PDF</span>
       <span style="flex:1;display:flex;flex-direction:column;gap:2px"><b style="font-size:14px">Evidence packet</b><span class="sub">${esc(x.title)} · dated, in order</span></span>
       <button class="chip" style="min-height:36px">Download</button></div></div>`;
     case 'finding': return `<div class="row"><div class="card"><div class="pad">
@@ -493,9 +561,10 @@ function msgHTML(x) {
       <div style="padding:10px 12px;font-size:13px;line-height:1.5;color:var(--soft)">${esc(draftBody(x.title, x.res))}</div>
       <div style="padding:0 12px 10px" class="sub">Photos attached</div>
       <div class="btnrow"><button>Edit</button><button data-act="copy">Copy</button><button class="primary" data-act="mail">Open in email</button></div></div></div>`;
-    case 'shop': return `<div class="row"><div class="card">
-      <div style="padding:10px 12px;display:flex;justify-content:space-between;align-items:center"><span class="eyebrow">Fix it yourself</span><span class="sub" style="font-size:11px">from Shopify stores</span></div>
-      ${['Mould and mildew remover', 'Grout scrub brush', 'Mould-resistant caulk'].map((p) => `<a class="shop" href="#"><span class="th"></span><span style="flex:1"><b>[${p}]</b><span class="sub">[Store] · $[price]</span></span><span style="font-size:13px;font-weight:600">View</span></a>`).join('')}
+    case 'shop': return `<div class="prodwrap">
+      <span class="prodcap">Fix it yourself · from Shopify stores</span>
+      <div class="prodrow" role="list">
+        ${PRODUCTS.map((p) => `<a class="prod" role="listitem" href="#"><span class="prodimg">${p.img}</span><b class="prodname">${esc(p.name)}</b><span class="prodsub">${esc(p.sub)}</span><span class="prodprice">$[price]</span></a>`).join('')}
       </div></div>`;
   }
   return '';
@@ -508,26 +577,31 @@ function chatView(conv) {
     ? `<button class="pin" data-act="case"><span class="ic">${ICON.doc}</span><span style="flex:1;min-width:0"><b>${esc(kase.title)}</b><small>${esc(kase.status)}</small></span>${ICON.chev}</button>`
     : '';
   const typing = S.typing ? `<div class="row"><div class="bot"><span class="typing"><i></i><i></i><i></i></span></div></div>` : '';
+  const attachLabel = S.type && S.step === 1 ? 'Add photo or video' : (S.fixed && !S.verified) ? 'Add photo of the repair' : null;
   const placeholder = S.step === 1 ? 'Where, since when, who you told' : 'Describe the problem, any language';
   return `
     <div class="nav">
       <button class="navbtn" aria-label="Your cases, ${openCount(kase)} open" data-act="cases">${ICON.doc}<span class="count" aria-hidden="true">${openCount(kase)}</span></button>
-      <span class="navtitle">${kase ? 'Case chat' : ''}</span>
+      <span class="navtitle"></span>
       ${kase ? `<button class="navbtn" aria-label="Start a new case" data-act="new">${ICON.compose}</button>` : '<span></span>'}
     </div>
-    ${pin}
     ${conv.empty ? `
     <div class="hero">
       <h1>Your rights as a tenant, made simple.</h1>    </div>
     <div class="sugrow" role="list" aria-label="Start a case">
       ${Object.entries(TYPES).map(([k, T]) => `<button class="sugcard" role="listitem" data-type="${k}"><span class="sugic">${TYPE_ICON[k]}</span><span class="sugtxt"><b>${esc(T.label)}</b><span>${esc(T.hint)}</span></span></button>`).join('')}
     </div>`
-    : `<div class="scroll" id="scroll">${m.map(msgHTML).join('')}${typing}</div>
-    <div class="chips">${S.typing ? '' : chips.map((c, i) => `<button class="chip${c.dark ? ' dark' : ''}" data-chip="${i}">${esc(c.label)}</button>`).join('')}</div>`}
+    : `<div class="chatarea">
+      ${pin ? `<div class="pinwrap">${pin}</div>` : ''}
+      <div class="scroll${pin ? ' haspin' : ''}" id="scroll">${m.map(msgHTML).join('')}${typing}</div>
+    </div>
+    <div class="chips">${S.typing ? '' : chips.map((c, i) => `<button class="chip${c.dark ? ' dark' : ''}" data-chip="${i}"><span>${esc(c.label)}</span>${ICON.arrowNE}</button>`).join('')}</div>`}
     <form class="composer" id="composer">
       <input type="text" id="msg" aria-label="Message" placeholder="${conv.empty ? "Tell us what's wrong at home" : placeholder}" autocomplete="off">
       <div class="composer-row">
-        <button type="button" class="cbtn" aria-label="Add photo or video" data-act="attach">${ICON.plus(20)}</button>
+        ${attachLabel
+          ? `<button type="button" class="cbtn wide" data-act="attach">${ICON.cam}<span>${attachLabel}</span></button>`
+          : `<button type="button" class="cbtn" aria-label="Add photo or video" data-act="attach">${ICON.plus(20)}</button>`}
         <span style="flex:1"></span>
         <button type="button" class="cbtn bare" aria-label="Talk instead of typing">${ICON.mic}</button>
         <button type="submit" class="csend" aria-label="Send">${ICON.arrowUp}</button>
@@ -556,7 +630,7 @@ function caseView(kase) {
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="eyebrow">Possible violation</span><span class="chip-lbl">${esc(r.label)}</span></div>
       <div class="grid2"><div><span class="big">${esc(r.cls)}</span><div class="sub">${esc(r.sub)}</div></div><div><span class="big">${esc(r.days)}</span><div class="sub">${esc(r.daysSub)}</div></div></div>
       <span style="font-size:13px">NYC Housing Maintenance Code § [section]</span>
-      ${S.type === 'mould' ? '<div style="border-top:1px solid #F0E9DE;padding-top:8px;display:flex;justify-content:space-between;font-size:13px"><span>Water stain (leak)</span><b>Inspector decides</b></div>' : ''}
+      ${S.type === 'mould' ? '<div style="border-top:1px solid #EEEEEE;padding-top:8px;display:flex;justify-content:space-between;font-size:13px"><span>Water stain (leak)</span><b>Inspector decides</b></div>' : ''}
     </div>` : kase.diy ? `<div class="boxed"><span class="eyebrow">Result</span><b style="font-size:15px">Not a violation</b><span class="sub" style="font-size:13px">Surface mould on intact tile, grout or caulk is the tenant's to clean. Film again if it spreads.</span></div>`
     : `<div class="boxed"><span class="eyebrow">Not checked yet</span><span class="sub" style="font-size:13px">${kase.hasEvidence ? 'Answer the question in the chat to finish the check.' : 'Add photos and a description in the chat. Tenard will check it against the rules.'}</span></div>`;
   const steps = r ? `<div class="section" style="gap:0"><span class="eyebrow" style="padding-bottom:10px">Steps</span>
@@ -573,11 +647,11 @@ function caseView(kase) {
       <button class="navbtn" aria-label="Your cases, ${openCount(kase)} open" data-act="cases">${ICON.doc}<span class="count" aria-hidden="true">${openCount(kase)}</span></button>
     </div>
     <div class="page">
-      <div class="section" style="gap:4px"><h1 style="margin:0;font-size:24px">${esc(kase.title)}</h1><span class="sub" style="font-size:13px">[Address], Apt 4B · started Nov 21</span></div>
+      <div class="section" style="gap:4px"><h1 style="margin:0;font-size:24px">${esc(kase.title)}</h1><span class="sub" style="font-size:13px">1415 Morris Ave, Apt 4B · started Nov 21</span></div>
       <div class="boxed strong" style="flex-direction:row;justify-content:space-between;align-items:center;padding:12px 14px">
         <span style="display:flex;flex-direction:column;gap:2px"><b style="font-size:15px">${statusMain}</b><span class="sub" style="font-size:13px">${statusSub}</span></span>
         ${g.resolved ? '<span class="badge">Closed</span>' : r ? `<span class="badge">Step ${stepNow} of 4</span>` : ''}</div>
-      ${kase.hasEvidence ? `<div class="ph" style="margin:14px 20px 0;height:150px">${S.photo ? `<img src="${S.photo}" alt="Evidence photo">` : ICON.xph(350, 150)}<span class="tag">Evidence · Nov 21</span></div>`
+      ${kase.hasEvidence ? `<div class="ph" style="margin:14px 20px 0;height:180px">${(S.photo || kase.T.photo) ? `<img src="${S.photo || kase.T.photo}" alt="Evidence photo">` : ICON.xph(350, 150)}<span class="tag">Evidence · Nov 21</span></div>`
         : `<button class="boxed" data-act="chat" style="background:#fff;align-items:center;border-style:dashed;min-height:110px;justify-content:center">${ICON.plus(22)}<b style="font-size:14px">Add photos or video</b></button>`}
       ${finding}
       ${steps}
@@ -599,7 +673,19 @@ function caseView(kase) {
 
 /* ---------- bottom sheet: all cases ---------- */
 function sheetView(kase, animate) {
-  const current = kase ? `<button class="casecard" data-act="open-case"><span style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b style="font-size:16px">${esc(kase.title)}</b>${kase.res ? `<span class="badge">${esc(kase.res.cls)}</span>` : ''}</span><span class="sub" style="font-size:13px">${esc(kase.status)}</span></button>` : '';
+  const card = (title, sub, stage, color, act) => `<${act ? `button data-act="${act}"` : 'div'} class="casecard"><b style="font-size:16px">${esc(title)}</b><span class="sub" style="font-size:13px">${esc(sub)}</span><span class="stage ${color}">${esc(stage)}</span></${act ? 'button' : 'div'}>`;
+  const g = kase && kase.stage;
+  const [stage, color] = !kase ? [] : g.resolved ? ['Fixed', 'green'] : g.court ? ['Housing Court', 'red'] : g.violation ? ['HPD violation', 'orange']
+    : g.noViolation ? ['No violation issued', 'orange'] : g.filed ? ['Inspection pending', 'blue'] : g.filing ? ['File with 311', 'yellow']
+    : kase.sent ? ['Waiting on landlord', 'yellow'] : kase.diy ? ['Yours to fix', 'grey'] : kase.res ? ['Notice ready', 'yellow'] : ['New', 'grey'];
+  const sub = kase ? (kase.res ? `${kase.res.cls} · started Nov 21` : 'Started Nov 21') : '';
+  const currentCard = kase ? card(kase.title, sub, stage, color, 'open-case') : '';
+  const current = kase && !g.resolved ? currentCard : '';
+  const closedNow = kase && g.resolved ? currentCard : '';
+  const closedCount = 1 + (closedNow ? 1 : 0);
+  const closed = `
+        <button class="closed-toggle" data-act="toggle-closed" aria-expanded="${!!S.showClosed}"><span>Closed · ${closedCount}</span><span class="chev${S.showClosed ? ' open' : ''}">${ICON.chev}</span></button>
+        ${S.showClosed ? closedNow + card('Bedroom smoke detector', 'Resolved Sep 30 · repair confirmed on video', 'Fixed', 'green') : ''}`;
   return `
     <div class="nav">
       <button class="back" data-act="close-sheet">${ICON.back}${S.prevView === 'case' ? 'Case' : 'Chat'}</button>
@@ -608,12 +694,11 @@ function sheetView(kase, animate) {
     </div>
     <div class="cases-page">
       <div class="sheet-body">
-        <div class="home"><span style="display:flex;flex-direction:column;gap:2px"><b style="font-size:15px">[Address], Apt 4B, Bronx</b><span class="sub" style="font-size:13px">Rent-stabilized · built 1928 · Home details</span></span>${ICON.chev}</div>
+        <button class="home"><span class="sugic">${ICON.house}</span><span class="sugtxt" style="flex:1"><b>1415 Morris Ave, Apt 4B</b><span>Bronx · rent-stabilized · built 1928</span></span>${ICON.chev}</button>
         <span class="eyebrow" style="padding-top:6px">Open</span>
         ${current}
-        <div class="casecard quiet"><span style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b style="font-size:16px">Kitchen sink leak</b><span class="badge" style="border-color:#B3A595">Inspector decides</span></span><span class="sub" style="font-size:13px">311 filed Nov 2 · inspection pending</span></div>
-        <span class="eyebrow" style="padding-top:8px">Closed</span>
-        <div class="casecard closed"><span style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b style="font-size:16px;color:var(--soft)">Bedroom smoke detector</b><span class="sub">Fixed</span></span><span class="sub" style="font-size:13px">Resolved Sep 30 · repair confirmed on video</span></div>
+        ${card('Kitchen sink leak', '311 filed Nov 2 · inspector decides the class', 'Inspection pending', 'blue')}
+        ${closed}
       </div>
       <div class="sheet-foot"><button class="primary-btn" data-act="new">${ICON.plus(20)} New case</button></div>
     </div>`;
@@ -662,10 +747,11 @@ document.addEventListener('click', (e) => {
   if (act === 'case') { if (S.type) set({ view: 'case' }); else set({ prevView: S.view, view: 'cases' }); }
   else if (act === 'cases') set({ prevView: S.view, view: 'cases' });
   else if (act === 'close-sheet') set({ view: S.prevView || 'chat' });
+  else if (act === 'toggle-closed') set({ showClosed: !S.showClosed });
   else if (act === 'open-case') set({ view: 'case' });
   else if (act === 'chat') set({ view: 'chat' });
   else if (act === 'new') set(Object.assign({ view: 'chat' }, FRESH));
-  else if (act === 'attach') { S.awaitVerify = false; document.getElementById('file').click(); }
+  else if (act === 'attach') { S.awaitVerify = !!(S.fixed && !S.verified); document.getElementById('file').click(); }
   else if (act === 'copy') a.textContent = 'Copied';
   else if (act === 'mail') a.textContent = 'Opening…';
 });
@@ -677,6 +763,7 @@ document.addEventListener('submit', (e) => {
   if (!v) return;
   if (!S.type) startCase(guessType(v), v);
   else if (S.step === 1) addEvidence({ desc2: v });
+  else if (S.fixed && !S.verified) set({ verified: true }, 700);
 });
 
 document.getElementById('file').addEventListener('change', (e) => {
