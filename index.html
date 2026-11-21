@@ -202,6 +202,15 @@
   /* reply suggestions: stacked outline pills with an arrow */
   .phone .chips { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 8px; padding: 6px 16px 12px; }
   .phone .chips.inline { flex-direction: row; flex-wrap: wrap; }
+  .reset-demo { align-self: center; margin-top: 8px; min-height: 44px; border: 0; background: none; color: var(--muted); font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
+  /* small phones: give the chat more room */
+  @media (max-height: 760px) {
+    .phone .chips { gap: 6px; padding: 4px 16px 8px; }
+    .phone .chip { min-height: 34px; font-size: 15px; padding: 0 14px 0 16px; gap: 10px; }
+    .composer { padding: 10px 8px 8px 16px; gap: 6px; }
+    .cbtn, .csend { width: 38px; height: 38px; }
+  }
+  @media (max-width: 500px) { .composer { margin-bottom: calc(10px + env(safe-area-inset-bottom)); } }
   .phone .chip { display: inline-flex; align-items: center; gap: 14px; min-height: 40px; padding: 0 16px 0 20px; border: 1.5px solid #D9D9D9; border-radius: 999px; background: #fff; color: #555; font-size: 16px; font-weight: 500; letter-spacing: -.2px; }
   .phone .chip svg { color: #666; flex-shrink: 0; }
   .phone .chip:hover { border-color: #BDBDBD; color: #222; }
@@ -349,21 +358,61 @@ const PRODUCTS = [
 const MOULD_RES = { title: 'Bathroom mould + leak', cls: 'Class B', sub: 'Hazardous · 10–30 sq ft', days: '30 days', daysSub: HPD, label: 'Settled',
   say: 'So yes, this counts. Your landlord has to remove the mould safely and fix the leak causing it. They get 30 days once HPD issues a violation.' };
 
+/* Which of the five covered problems a typed message is about, or null. English and a little Spanish. */
 function guessType(text) {
   const t = text.toLowerCase();
-  if (/mou?ld|mildew/.test(t)) return 'mould';
-  if (/paint|plaster|lead/.test(t)) return 'paint';
-  if (/window|guard/.test(t)) return 'window';
-  if (/smoke|detector|carbon|alarm/.test(t)) return 'detector';
-  if (/leak|water|drip|stain|flood/.test(t)) return 'leak';
-  return 'mould';
+  if (/mou?ld|mildew|moho|hongo/.test(t)) return 'mould';
+  if (/paint|plaster|lead|pintura/.test(t)) return 'paint';
+  if (/window|guard|ventana/.test(t)) return 'window';
+  if (/smoke|detector|carbon|alarm|humo/.test(t)) return 'detector';
+  if (/leak|water|drip|stain|flood|gotera|fuga|agua/.test(t)) return 'leak';
+  return null;
 }
+/* Problems people will type that this version doesn't cover yet. */
+function offScopeKind(text) {
+  const t = text.toLowerCase();
+  if (/heat|heating|radiator|cold|freez|hot water|boiler|calefacci/.test(t)) return 'heat';
+  if (/roach|cockroach|mice|mouse|rat\b|rats|bed ?bug|pest|cucaracha|rat[oó]n/.test(t)) return 'pests';
+  return 'unknown';
+}
+const OFFSCOPE = {
+  heat: "Heat and hot water aren't covered in this version yet.\n\nIf you have no heat right now, call 311. In heat season (October to May) no heat is treated as an urgent violation.\n\nI can already help with these:",
+  pests: "Pests aren't covered in this version yet.\n\nYou can report them to 311 now: roaches, mice and rats in an apartment are a violation your landlord has to fix.\n\nI can already help with these:",
+  unknown: "I couldn't tell which problem this is. Pick the closest one, or describe it in a few more words:"
+};
 
 /* ---------- state ---------- */
 const FRESH = { type: null, step: 0, path: 'ceiling', answer: 0, answerLabel: '', asked: false, desc: null, desc2: null, typedFirst: false, photo: null,
-  fixed: false, verified: false, awaitVerify: false, afterPhoto: null, insp: null, missed: false, exported: false };
+  fixed: false, verified: false, awaitVerify: false, afterPhoto: null, insp: null, missed: false, exported: false, offscope: null };
 const RENT_STABILIZED = true; // from "About your home"
-const S = Object.assign({ view: 'chat', typing: false }, FRESH);
+const S = Object.assign({ view: 'chat', typing: false, cases: [] }, FRESH);
+
+/* ---------- saved cases and persistence ---------- */
+const STORE = 'tenard-v2';
+const snapshot = () => { const s = {}; for (const k in FRESH) s[k] = S[k]; return s; };
+const portable = (snap) => Object.assign({}, snap, {
+  photo: snap.photo && snap.photo.startsWith('blob:') ? null : snap.photo,
+  afterPhoto: snap.afterPhoto && snap.afterPhoto.startsWith('blob:') ? null : snap.afterPhoto,
+  awaitVerify: false
+});
+/* The case summary for a saved case: run the conversation against it, then put the live state back. */
+function kaseFor(snap) {
+  const live = snapshot();
+  Object.assign(S, snap);
+  const k = conversation().kase;
+  Object.assign(S, live);
+  return k;
+}
+function archiveCurrent() { if (S.type) S.cases.unshift(snapshot()); }
+function saveState() {
+  try { localStorage.setItem(STORE, JSON.stringify({ current: portable(snapshot()), cases: S.cases.map(portable) })); } catch (e) { /* private mode: run without saving */ }
+}
+function loadState() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORE) || 'null');
+    if (saved && saved.current) { Object.assign(S, FRESH, saved.current); S.cases = Array.isArray(saved.cases) ? saved.cases : []; }
+  } catch (e) { /* ignore a broken or blocked store */ }
+}
 function set(patch, botDelay) {
   if (botDelay) {
     S.typing = true; render();
@@ -379,7 +428,13 @@ function conversation() {
   const user = (t) => m.push({ t: 'user', text: t });
   let chips = [];
 
-  if (!S.type) return { m, chips, kase: null, empty: true };
+  if (!S.type) {
+    if (!S.offscope) return { m, chips, kase: null, empty: true };
+    user(S.offscope.text);
+    bot(OFFSCOPE[S.offscope.kind]);
+    chips = Object.entries(TYPES).map(([k, T]) => ({ label: T.label, go: () => startCase(k) }));
+    return { m, chips, kase: null };
+  }
 
   const T = TYPES[S.type];
   user(S.typedFirst ? S.desc : '+ ' + T.label);
@@ -629,7 +684,7 @@ function chatView(conv) {
       ${pin ? `<div class="pinwrap">${pin}</div>` : ''}
       <div class="scroll${pin ? ' haspin' : ''}" id="scroll">${m.map(msgHTML).join('')}${typing}</div>
     </div>
-    <div class="chips${chips.every((c) => c.label.length <= 18) ? ' inline' : ''}">${S.typing ? '' : chips.map((c, i) => `<button class="chip${c.dark ? ' dark' : ''}" data-chip="${i}"><span>${esc(c.label)}</span>${ICON.arrowNE}</button>`).join('')}</div>`}
+    <div class="chips${chips.every((c) => c.label.length <= 18) || chips.reduce((n, c) => n + c.label.length, 0) <= 30 ? ' inline' : ''}">${S.typing ? '' : chips.map((c, i) => `<button class="chip${c.dark ? ' dark' : ''}" data-chip="${i}"><span>${esc(c.label)}</span>${ICON.arrowNE}</button>`).join('')}</div>`}
     <form class="composer" id="composer">
       <input type="text" id="msg" aria-label="Message" placeholder="${conv.empty ? "Tell us what's wrong at home" : placeholder}" autocomplete="off">
       <div class="composer-row">
@@ -708,18 +763,21 @@ function caseView(kase) {
 /* ---------- bottom sheet: all cases ---------- */
 function sheetView(kase, animate) {
   const card = (title, sub, stage, color, act) => `<${act ? `button data-act="${act}"` : 'div'} class="casecard"><b style="font-size:16px">${esc(title)}</b><span class="sub" style="font-size:13px">${esc(sub)}</span><span class="stage ${color}">${esc(stage)}</span></${act ? 'button' : 'div'}>`;
-  const g = kase && kase.stage;
-  const [stage, color] = !kase ? [] : g.resolved ? ['Fixed', 'green'] : g.court ? ['Housing Court', 'red'] : g.violation ? ['HPD violation', 'orange']
-    : g.noViolation ? ['No violation issued', 'orange'] : g.filed ? ['Inspection pending', 'blue'] : g.filing ? ['File with 311', 'yellow']
-    : kase.sent ? ['Waiting on landlord', 'yellow'] : kase.diy ? ['Yours to fix', 'grey'] : kase.res ? ['Notice ready', 'yellow'] : ['New', 'grey'];
-  const sub = kase ? (kase.res ? `${kase.res.cls} · started Nov 21` : 'Started Nov 21') : '';
-  const currentCard = kase ? card(kase.title, sub, stage, color, 'open-case') : '';
-  const current = kase && !g.resolved ? currentCard : '';
-  const closedNow = kase && g.resolved ? currentCard : '';
-  const closedCount = 1 + (closedNow ? 1 : 0);
+  const cardFor = (k, act) => {
+    const [stage, color] = stageOf(k);
+    return card(k.title, k.res ? `${k.res.cls} · started Nov 21` : 'Started Nov 21', stage, color, act);
+  };
+  // the current case first, then cases saved when "New case" was pressed
+  const all = [];
+  if (kase) all.push({ k: kase, act: 'open-case' });
+  S.cases.forEach((snap, i) => { if (snap.type) all.push({ k: kaseFor(snap), act: `open-saved:${i}` }); });
+  const open = all.filter((c) => !c.k.stage.resolved).map((c) => cardFor(c.k, c.act)).join('');
+  const done = all.filter((c) => c.k.stage.resolved).map((c) => cardFor(c.k, c.act)).join('');
+  const closedCount = 1 + all.filter((c) => c.k.stage.resolved).length;
   const closed = `
         <button class="closed-toggle" data-act="toggle-closed" aria-expanded="${!!S.showClosed}"><span>Closed · ${closedCount}</span><span class="chev${S.showClosed ? ' open' : ''}">${ICON.chev}</span></button>
-        ${S.showClosed ? closedNow + card('Bedroom smoke detector', 'Resolved Sep 30 · repair confirmed on video', 'Fixed', 'green') : ''}`;
+        ${S.showClosed ? done + card('Bedroom smoke detector', 'Resolved Sep 30 · repair confirmed on video', 'Fixed', 'green') : ''}`;
+  const current = open;
   return `
     <div class="nav">
       <button class="back" data-act="close-sheet">${ICON.back}${S.prevView === 'case' ? 'Case' : 'Chat'}</button>
@@ -733,6 +791,7 @@ function sheetView(kase, animate) {
         ${current}
         ${card('Kitchen sink leak', '311 filed Nov 2 · inspector decides the class', 'Inspection pending', 'blue')}
         ${closed}
+        <button class="reset-demo" data-act="reset">Reset demo data</button>
       </div>
       <div class="sheet-foot"><button class="primary-btn" data-act="new">${ICON.plus(20)} New case</button></div>
     </div>`;
@@ -743,7 +802,17 @@ const STATUS_BAR = `<div class="statusbar" aria-hidden="true"><span class="time"
   <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 2.4c2.3 0 4.4.9 6 2.4l1.2-1.3A10.4 10.4 0 0 0 8 .6 10.4 10.4 0 0 0 .8 3.5L2 4.8a8.6 8.6 0 0 1 6-2.4zm0 3.5c1.3 0 2.5.5 3.5 1.3l1.2-1.3A7 7 0 0 0 8 4.1 7 7 0 0 0 3.3 5.9l1.2 1.3A5.2 5.2 0 0 1 8 5.9zm0 3.4c.4 0 .8.1 1.1.4L8 11.4 6.9 9.7c.3-.3.7-.4 1.1-.4z" fill="currentColor"/></svg>
   <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="20" height="9" rx="2" fill="currentColor"/><path d="M25 4.5v4c.8-.3 1.3-1.1 1.3-2s-.5-1.7-1.3-2z" fill="currentColor" opacity=".45"/></svg>
 </span></div>`;
-function openCount(kase) { return 1 + (kase && !kase.diy && !(kase.stage && kase.stage.resolved) ? 1 : 0); }
+function stageOf(k) {
+  const g = k.stage;
+  return g.resolved ? ['Fixed', 'green'] : g.court ? ['Housing Court', 'red'] : g.violation ? ['HPD violation', 'orange']
+    : g.noViolation ? ['No violation issued', 'orange'] : g.filed ? ['Inspection pending', 'blue'] : g.filing ? ['File with 311', 'yellow']
+    : k.sent ? ['Waiting on landlord', 'yellow'] : k.diy ? ['Yours to fix', 'grey'] : k.res ? ['Notice ready', 'yellow'] : ['New', 'grey'];
+}
+/* open cases: the sample kitchen leak, the current case, and saved ones that aren't resolved */
+function openCount(kase) {
+  const isOpen = (k) => k && !k.diy && !k.stage.resolved;
+  return 1 + (isOpen(kase) ? 1 : 0) + S.cases.filter((s) => s.type && isOpen(kaseFor(s))).length;
+}
 
 let lastChips = [];
 let sheetWasOpen = false;
@@ -756,11 +825,12 @@ function render() {
   app.innerHTML = STATUS_BAR + base + '<div class="homebar" aria-hidden="true"></div>';
   const sc = document.getElementById('scroll');
   if (sc) sc.scrollTop = sc.scrollHeight;
+  if (!S.typing) saveState();
 }
 
 /* ---------- events ---------- */
 function startCase(type, typedDesc) {
-  set({ type, step: 1, desc: typedDesc || null, typedFirst: !!typedDesc }, 600);
+  set({ type, step: 1, desc: typedDesc || null, typedFirst: !!typedDesc, offscope: null }, 600);
 }
 function addEvidence(patch) { set(Object.assign({ step: 2 }, patch), 900); }
 
@@ -784,7 +854,17 @@ document.addEventListener('click', (e) => {
   else if (act === 'toggle-closed') set({ showClosed: !S.showClosed });
   else if (act === 'open-case') set({ view: 'case' });
   else if (act === 'chat') set({ view: 'chat' });
-  else if (act === 'new') set(Object.assign({ view: 'chat' }, FRESH));
+  else if (act === 'new') { archiveCurrent(); set(Object.assign({ view: 'chat' }, FRESH)); }
+  else if (act.startsWith('open-saved:')) {
+    const snap = S.cases.splice(+act.split(':')[1], 1)[0];
+    archiveCurrent();
+    set(Object.assign({}, FRESH, snap, { view: 'case' }));
+  }
+  else if (act === 'reset') {
+    try { localStorage.removeItem(STORE); } catch (err) { /* nothing saved */ }
+    S.cases = [];
+    set(Object.assign({ view: 'chat', showClosed: false }, FRESH));
+  }
   else if (act === 'attach') { S.awaitVerify = !!(S.fixed && !S.verified); document.getElementById('file').click(); }
   else if (act === 'copy') a.textContent = 'Copied';
   else if (act === 'mail') a.textContent = 'Opening…';
@@ -795,7 +875,11 @@ document.addEventListener('submit', (e) => {
   e.preventDefault();
   const v = document.getElementById('msg').value.trim();
   if (!v) return;
-  if (!S.type) startCase(guessType(v), v);
+  if (!S.type) {
+    const type = guessType(v);
+    if (type) startCase(type, v);
+    else set({ offscope: { text: v, kind: offScopeKind(v) } }, 700);
+  }
   else if (S.step === 1) addEvidence({ desc2: v });
   else if (S.fixed && !S.verified) set({ verified: true }, 700);
 });
@@ -808,11 +892,12 @@ document.getElementById('file').addEventListener('change', (e) => {
   if (S.awaitVerify) { set({ verified: true, afterPhoto: url, awaitVerify: false }, 700); return; }
   const typed = document.getElementById('msg') ? document.getElementById('msg').value.trim() : '';
   const patch = Object.assign({ photo: url }, typed ? { desc2: typed } : {});
-  if (!S.type) Object.assign(S, { type: guessType(typed), typedFirst: false });
+  if (!S.type) Object.assign(S, { type: guessType(typed) || 'mould', typedFirst: false, offscope: null });
   if (S.step < 2) addEvidence(patch); else set(patch);
   e.target.value = '';
 });
 
+loadState();
 render();
 </script>
 </body>
