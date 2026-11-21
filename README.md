@@ -17,7 +17,12 @@ Problem types in the MVP: mould, leaks, peeling paint, windows and window guards
 Clickable prototype. The chat is scripted from the team's decision tree; it is not connected to Gemini yet.
 Rule sections, 311 categories and product links are placeholders (`[section]`, `[311 type]`, `[Store]`).
 
-## Run it
+## Try it
+
+- Live: https://hey-niia.github.io/tenard/
+- First grayscale version: https://hey-niia.github.io/tenard/v1/
+
+## Run it locally
 
 ```bash
 python3 -m http.server 5180
