@@ -178,8 +178,30 @@
   .sheet-foot .primary-btn { width: 100%; }
   .home { width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px 14px 12px 12px; border: 1px solid #E6E6E6; border-radius: 22px; background: #fff; text-align: left; color: var(--ink); box-shadow: 0 6px 18px -12px rgba(0, 0, 0, .35); }
   .badge { font-size: 12px; font-weight: 600; border: 1px solid var(--ink); border-radius: 6px; padding: 2px 6px; white-space: nowrap; }
+  /* cards in the chat: white, light border, soft shadow */
+  .phone .card { border: 1px solid #E6E6E6; border-radius: 22px; box-shadow: 0 6px 18px -12px rgba(0, 0, 0, .35); }
+  .fcard { padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .fhead { display: flex; align-items: center; gap: 12px; }
+  .ftile { background: #F4F4F4; border-radius: 14px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; }
+  .frule { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 40px; padding: 0 14px; border: 1.5px solid #D9D9D9; border-radius: 999px; background: #fff; color: #333; font-size: 14px; font-weight: 500; text-align: left; }
+  .frule svg { color: #666; flex-shrink: 0; }
+  .fmeta { gap: 6px; font-size: 14px; }
+  .fmeta > span { display: flex; gap: 8px; } .fmeta .sub { width: 52px; flex-shrink: 0; font-size: 13px; padding-top: 1px; }
+  .fbody { margin: 0 2px; font-size: 15px; line-height: 1.5; color: #333; }
+  .fattach { display: flex; align-items: center; gap: 10px; }
+  .fattach img, .fthumb { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; background: #F0F0F0; }
+  .factions { display: flex; gap: 8px; }
+  .factions .fbtn.primary { flex: 1; }
+  .fbtn { min-height: 40px; padding: 0 14px; white-space: nowrap; border: 1.5px solid #D9D9D9; border-radius: 999px; background: #fff; color: #333; font-size: 15px; font-weight: 500; }
+  .fbtn.primary { border-color: var(--yellow); background: var(--yellow); color: #111; font-weight: 600; }
+  .flist { display: flex; flex-direction: column; }
+  .fitem { display: flex; align-items: center; gap: 10px; min-height: 42px; border-top: 1px solid #F0F0F0; font-size: 14px; }
+  .fcheck { width: 22px; height: 22px; border-radius: 11px; flex-shrink: 0; border: 1.5px solid #CFCFCF; display: flex; align-items: center; justify-content: center; }
+  .fcheck.ok { border: 0; background: var(--yellow); color: #111; }
+  .fadd { border: 0; background: #F2F2F2; border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 600; }
   /* reply suggestions: stacked outline pills with an arrow */
   .phone .chips { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 8px; padding: 6px 16px 12px; }
+  .phone .chips.inline { flex-direction: row; flex-wrap: wrap; }
   .phone .chip { display: inline-flex; align-items: center; gap: 14px; min-height: 40px; padding: 0 16px 0 20px; border: 1.5px solid #D9D9D9; border-radius: 999px; background: #fff; color: #555; font-size: 16px; font-weight: 500; letter-spacing: -.2px; }
   .phone .chip svg { color: #666; flex-shrink: 0; }
   .phone .chip:hover { border-color: #BDBDBD; color: #222; }
@@ -217,6 +239,10 @@
 <script>
 const ICON = {
   arrowNE: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>',
+  scale: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M7 20h10M5 7h14M12 4l-1 3h2z"/><path d="M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z"/></svg>',
+  mail: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5L12 13l8.5-6.5"/></svg>',
+  megaphone: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10v4a1 1 0 0 0 1 1h2l6 4V5L7 9H5a1 1 0 0 0-1 1z"/><path d="M8 15l1.5 4.5M17 9a4 4 0 0 1 0 6"/></svg>',
+  list: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6h10M10 12h10M10 18h10"/><path d="M3.5 6l1.5 1.5L7.5 5M3.5 12l1.5 1.5L7.5 11"/><circle cx="5" cy="18" r="1.3"/></svg>',
   house: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5L12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg>',
   mic: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',
   arrowUp: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>',
@@ -529,12 +555,12 @@ function msgHTML(x) {
     }
     case 'system': return `<button class="sys" data-act="case"><span style="text-align:center;max-width:75%">${x.closed ? 'Case resolved' : 'Case started'}: <b style="color:#111111">${esc(x.text)}</b> · Open</span></button>`;
     case 'date': return `<div style="text-align:center;padding:10px 0 2px"><span style="font-size:12px;font-weight:600;color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:3px 10px">${esc(x.text)}</span></div>`;
-    case 'complaint': return `<div class="row"><div class="card">
-      <div style="padding:10px 12px;border-bottom:1px solid var(--line)"><span class="eyebrow">311 complaint · ready to file</span></div>
-      <div style="padding:10px 12px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:2px"><span class="sub">Complaint type</span><b style="font-size:14px">[311 type] › [HPD category]</b></div>
-      <div style="padding:10px 12px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px"><span><span class="sub">Where</span><br><b style="font-size:14px">${esc(x.T.where)}</b></span><span><span class="sub">Apartment</span><br><b style="font-size:14px">4B</b></span></div>
-      <div style="padding:10px 12px;font-size:13px;line-height:1.5;color:var(--soft)">${esc(x.title)}. Written notice to landlord sent Nov 21 with photos. Not repaired as of Dec 5.</div>
-      <div class="btnrow"><button data-act="copy">Copy text</button><button class="primary" data-act="mail">Open 311 online</button></div></div></div>`;
+    case 'complaint': return `<div class="row"><div class="card fcard">
+      <div class="fhead"><span class="sugic">${ICON.megaphone}</span><span class="sugtxt" style="flex:1"><b>311 complaint</b><span>Ready to file · goes to HPD</span></span></div>
+      <div class="ftile"><span class="sub">Complaint type</span><b style="font-size:15px">[311 type] › [HPD category]</b></div>
+      <div class="grid2"><div class="ftile"><span class="sub">Where</span><b style="font-size:15px">${esc(x.T.where)}</b></div><div class="ftile"><span class="sub">Apartment</span><b style="font-size:15px">4B</b></div></div>
+      <p class="fbody">${esc(x.title)}. Written notice to landlord sent Nov 21 with photos. Not repaired as of Dec 5.</p>
+      <div class="factions"><button class="fbtn" data-act="copy">Copy text</button><button class="fbtn primary" data-act="mail">Open 311 online</button></div></div></div>`;
     case 'checklist': {
       const items = [
         ['Dated photos and video', true], ['Written notice to landlord · Nov 21', true], ['311 service request number', true],
@@ -542,25 +568,33 @@ function msgHTML(x) {
         ['Lease and rent receipts', false], ['How it affects you, in your words', false]
       ];
       const done = items.filter((i) => i[1]).length;
-      return `<div class="row"><div class="card">
-        <div style="padding:10px 12px;display:flex;justify-content:space-between;align-items:center"><span class="eyebrow">Evidence for court</span><span class="sub">${done} of ${items.length} ready</span></div>
-        ${items.map(([label, ok]) => `<div style="display:flex;gap:10px;align-items:center;padding:9px 12px;border-top:1px solid #EEEEEE;font-size:14px"><span style="width:20px;height:20px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;${ok ? 'background:#111111;color:var(--cream)' : 'border:1.5px solid #111111'}">${ok ? ICON.check : ''}</span><span style="flex:1${ok ? '' : ';color:var(--soft)'}">${esc(label)}</span>${ok ? '' : '<span style="font-size:13px;font-weight:600;text-decoration:underline">Add</span>'}</div>`).join('')}
+      return `<div class="row"><div class="card fcard">
+        <div class="fhead"><span class="sugic">${ICON.list}</span><span class="sugtxt" style="flex:1"><b>Evidence for court</b><span>${done} of ${items.length} ready</span></span></div>
+        <div class="progress"><div style="width:${Math.round(done / items.length * 100)}%;background:var(--yellow)"></div></div>
+        <div class="flist">${items.map(([label, ok]) => `<div class="fitem"><span class="fcheck${ok ? ' ok' : ''}">${ok ? ICON.check : ''}</span><span style="flex:1${ok ? '' : ';color:var(--soft)'}">${esc(label)}</span>${ok ? '' : '<button class="fadd">Add</button>'}</div>`).join('')}</div>
       </div></div>`;
     }
-    case 'file': return `<div class="row"><div class="card" style="display:flex;gap:12px;align-items:center;padding:12px">
-      <span style="width:40px;height:48px;border:1.5px solid #111111;border-radius:4px;flex-shrink:0;display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px;font-size:10px;font-weight:700">PDF</span>
-      <span style="flex:1;display:flex;flex-direction:column;gap:2px"><b style="font-size:14px">Evidence packet</b><span class="sub">${esc(x.title)} · dated, in order</span></span>
-      <button class="chip" style="min-height:36px">Download</button></div></div>`;
-    case 'finding': return `<div class="row"><div class="card"><div class="pad">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="eyebrow">Possible violation</span><span class="chip-lbl">${esc(x.res.label)}</span></div>
-      <div class="grid2"><div class="tile"><span class="big">${esc(x.res.cls)}</span><span class="sub">${esc(x.res.sub)}</span></div><div class="tile"><span class="big">${esc(x.res.days)}</span><span class="sub">${esc(x.res.daysSub)}</span></div></div>
-      <span style="font-size:13px">NYC Housing Maintenance Code § [section] · <a href="#" data-act="case" style="font-weight:600">See the rule</a></span>
-      <span class="sub" style="line-height:1.4">Not an official finding. Only an HPD inspector can issue a violation.</span></div></div></div>`;
-    case 'draft': return `<div class="row"><div class="card">
-      <div style="padding:10px 12px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:2px;font-size:12px"><span><span style="color:var(--muted)">To: </span>[Landlord / management]</span><span><span style="color:var(--muted)">Subject: </span>Repair request: ${esc(x.title)}, Apt 4B</span></div>
-      <div style="padding:10px 12px;font-size:13px;line-height:1.5;color:var(--soft)">${esc(draftBody(x.title, x.res))}</div>
-      <div style="padding:0 12px 10px" class="sub">Photos attached</div>
-      <div class="btnrow"><button>Edit</button><button data-act="copy">Copy</button><button class="primary" data-act="mail">Open in email</button></div></div></div>`;
+    case 'file': return `<div class="row"><div class="card fcard">
+      <div class="fhead"><span class="sugic" style="font-size:12px;font-weight:800;letter-spacing:.04em">PDF</span><span class="sugtxt" style="flex:1"><b>Evidence packet</b><span>${esc(x.title)} · dated, in order</span></span></div>
+      <div class="factions"><button class="fbtn primary">Download</button></div></div></div>`;
+    case 'finding': {
+      const lc = { 'Settled': 'green', 'Inspector decides': 'blue', 'From HPD records': 'grey', 'Not settled': 'orange' }[x.res.label] || 'grey';
+      return `<div class="row"><div class="card fcard">
+      <div class="fhead"><span class="sugic">${ICON.scale}</span><span class="sugtxt" style="flex:1"><b>Possible violation</b><span>NYC Housing Maintenance Code</span></span></div>
+      <div class="grid2"><div class="ftile"><span class="big">${esc(x.res.cls)}</span><span class="sub">${esc(x.res.sub)}</span></div><div class="ftile"><span class="big">${esc(x.res.days)}</span><span class="sub">${esc(x.res.daysSub)}</span></div></div>
+      <span class="stage ${lc}" style="margin-top:0">${esc(x.res.label)}</span>
+      <button class="frule" data-act="case"><span>§ [section] · See the rule</span>${ICON.arrowNE}</button>
+      <span class="sub" style="line-height:1.4">Not an official finding. Only an HPD inspector can issue a violation.</span></div></div>`;
+    }
+    case 'draft': {
+      const thumb = S.photo || (TYPES[S.type] && TYPES[S.type].photo);
+      return `<div class="row"><div class="card fcard">
+      <div class="fhead"><span class="sugic">${ICON.mail}</span><span class="sugtxt" style="flex:1"><b>Letter to your landlord</b><span>Draft · you send it</span></span></div>
+      <div class="ftile fmeta"><span><span class="sub">To</span>[Landlord / management]</span><span><span class="sub">Subject</span>Repair request: ${esc(x.title)}, Apt 4B</span></div>
+      <p class="fbody">${esc(draftBody(x.title, x.res))}</p>
+      <div class="fattach">${thumb ? `<img src="${thumb}" alt="">` : '<span class="fthumb"></span>'}<span class="sub">Photo attached</span></div>
+      <div class="factions"><button class="fbtn">Edit</button><button class="fbtn" data-act="copy">Copy</button><button class="fbtn primary" data-act="mail">Open in email</button></div></div></div>`;
+    }
     case 'shop': return `<div class="prodwrap">
       <span class="prodcap">Fix it yourself · from Shopify stores</span>
       <div class="prodrow" role="list">
@@ -595,7 +629,7 @@ function chatView(conv) {
       ${pin ? `<div class="pinwrap">${pin}</div>` : ''}
       <div class="scroll${pin ? ' haspin' : ''}" id="scroll">${m.map(msgHTML).join('')}${typing}</div>
     </div>
-    <div class="chips">${S.typing ? '' : chips.map((c, i) => `<button class="chip${c.dark ? ' dark' : ''}" data-chip="${i}"><span>${esc(c.label)}</span>${ICON.arrowNE}</button>`).join('')}</div>`}
+    <div class="chips${chips.every((c) => c.label.length <= 18) ? ' inline' : ''}">${S.typing ? '' : chips.map((c, i) => `<button class="chip${c.dark ? ' dark' : ''}" data-chip="${i}"><span>${esc(c.label)}</span>${ICON.arrowNE}</button>`).join('')}</div>`}
     <form class="composer" id="composer">
       <input type="text" id="msg" aria-label="Message" placeholder="${conv.empty ? "Tell us what's wrong at home" : placeholder}" autocomplete="off">
       <div class="composer-row">
